@@ -15,6 +15,7 @@
 
         <spring-boot.version>1.2.2.RELEASE</spring-boot.version>
 
+        <coveralls.dryRun>true</coveralls.dryRun>
         <main.basedir>${basedir}</main.basedir>
         <argLine></argLine>
     </properties>
@@ -118,7 +119,7 @@
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <dryRun>true</dryRun>
+                    <dryRun>${coveralls.dryRun}</dryRun>
                 </configuration>
             </plugin>
             <plugin>
@@ -143,4 +144,19 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>travis</id>
+            <activation>
+                <property>
+                    <name>TRAVIS</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <properties>
+                <coveralls.dryRun>false</coveralls.dryRun>
+            </properties>
+        </profile>
+    </profiles>
 </project>
