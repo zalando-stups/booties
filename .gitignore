@@ -1,0 +1,9 @@
+target
+.classpath
+.project
+.settings
+bin
+
+createDDL.jdbc
+*.log
+.DS_Store

@@ -1,0 +1,26 @@
+spring:
+    datasource:
+        platform: h2
+    jpa:
+        properties:
+            transaction-type: RESOURCE_LOCAL
+            # eclipselink.session.customizer: com.yourcompany.jpa.eclipselink.customizer.session.DefaultZomcatSessionCustomizer
+            # defined in org.eclipse.persistence.config.PersistenceUnitProperties
+            eclipselink.weaving: false
+            eclipselink.ddl-generation.output-mode: sql-script
+            # eclipselink.logging.logger: com.yourcompany.jpa.eclipselink.Slf4jSessionLog
+            eclipselink.persistence-context.flush-mode: COMMIT
+            eclipselink.ddl-generation: create-tables
+            # eclipselink.logging.file: eclipse-link-output.log
+            eclipselink.logging.timestamp: false
+            eclipselink.logging.session: false
+            eclipselink.logging.connection: false
+            eclipselink.logging.thread: false
+            eclipselink.logging.level.transaction: ALL
+            eclipselink.logging.level.sql: FINE
+            eclipselink.logging.level.event: ALL
+            eclipselink.logging.level.connection: ALL
+            eclipselink.logging.level.query: FINE
+            eclipselink.logging.level.cache: ALL
+            eclipselink.logging.level: ALL
+            eclipselink.logging.parameters: true
