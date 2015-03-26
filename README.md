@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/zalando-stups/booties.svg?branch=master)](https://travis-ci.org/zalando-stups/booties)
+[![Build Status](https://travis-ci.org/zalando-stups/booties.svg?branch=master)](https://travis-ci.org/zalando-stups/booties) [![Coverage Status](https://coveralls.io/repos/zalando-stups/booties/badge.svg)](https://coveralls.io/r/zalando-stups/booties)
 
 #Booties
 
