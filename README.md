@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/zalando-stups/booties.svg?branch=master)](https://travis-ci.org/zalando-stups/booties)
+
 #Booties
 
 ## License
