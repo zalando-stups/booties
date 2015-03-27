@@ -1,6 +1,6 @@
 language: java
 
-scripts:
+script:
     - mvn install
 
 after_success:
