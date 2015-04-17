@@ -122,9 +122,11 @@
                 <version>3.1.0</version>
                 <configuration>
                     <dryRun>${coveralls.dryRun}</dryRun>
-                    <relativeReportDirs>
-                        <relativeReportDir>/jacoco-it</relativeReportDir>
-                    </relativeReportDirs>
+                    <jacocoReports>
+                        <jacocoReport>spring-boot-zalando-stups-twintip/target/site/jacoco-it/jacoco.xml</jacocoReport>
+                        <jacocoReport>spring-boot-starter-guava-eventbus/target/site/jacoco-it/jacoco.xml</jacocoReport>
+                        <jacocoReport>spring-boot-starter-data-jpa-eclipselink/target/site/jacoco-it/jacoco.xml</jacocoReport>
+                    </jacocoReports>
                 </configuration>
             </plugin>
             <plugin>
