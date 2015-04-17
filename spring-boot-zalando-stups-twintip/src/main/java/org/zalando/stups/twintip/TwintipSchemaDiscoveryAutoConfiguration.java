@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.zalando.stups.boot.eventbus;
+package org.zalando.stups.twintip;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * To support both options (sync, async) in just one dependency.
- *
  * @author  jbellmann
  */
-public interface EventBusSupport {
+@Configuration
+public class TwintipSchemaDiscoveryAutoConfiguration {
 
-    void post(Object event);
-
-    void postAsync(Object event);
-
+    @Bean
+    public TwintipSchemaDiscoveryEndpoint twintipSchemaDiscoveryEndpoint() {
+        return new TwintipSchemaDiscoveryEndpoint();
+    }
 }

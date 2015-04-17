@@ -1,6 +1,6 @@
 ###How to use
 
-This starter autoconfigures a EclipseLink-EntityManager for JPA with Spring-Boot configuration-magic.
+This starter autoconfigures an EclipseLink-EntityManager for JPA with Spring-Boot configuration-magic.
 
 In your pom.xml add the following snippet:
 

@@ -13,17 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.zalando.stups.boot.eventbus;
+package com.unknown.pkg;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * To support both options (sync, async) in just one dependency.
+ * Just for Testing.
  *
  * @author  jbellmann
  */
-public interface EventBusSupport {
+@SpringBootApplication
+public class TwintipApplication {
 
-    void post(Object event);
-
-    void postAsync(Object event);
+    public static void main(final String[] args) {
+        SpringApplication.run(TwintipApplication.class, args);
+    }
 
 }
