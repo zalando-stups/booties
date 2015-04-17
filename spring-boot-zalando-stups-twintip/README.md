@@ -7,7 +7,6 @@ Add the following to your pom.xml when using maven.
     <dependency>
         <groupId>org.zalando.stups</groupId>
         <artifactId>spring-boot-zalando-stups-twintip</artifactId>
-        <scope>test</scope>
     </dependency>
 
 That will configure an Endpoint on '{contextpath}/.well-known/schema-discovery' that will be

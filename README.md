@@ -2,6 +2,20 @@
 
 #Booties
 
+###spring-boot-starter-guava-eventbus
+
+[Simple integration of Guave-Eventbus](https://github.com/zalando-stups/booties/tree/master/spring-boot-starter-guava-eventbus).
+
+###spring-boot-starter-data-jpa-eclipselink
+
+[If you don't like Hibernate you can use EclipseLink](https://github.com/zalando-stups/booties/tree/master/spring-boot-starter-data-jpa-eclipselink).
+
+###spring-boot-zalando-stups-twintip
+
+[Zalando-STUPS-Twintip Support](https://github.com/zalando-stups/booties/tree/master/spring-boot-zalando-stups-twintip).
+
+
+
 ## License
 
 Copyright © 2015 Zalando SE
