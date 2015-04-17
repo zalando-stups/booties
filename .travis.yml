@@ -4,5 +4,5 @@ script:
     - mvn install
 
 after_success:
-  - mvn coveralls:report
+  - mvn coveralls:report -Ptravis
 
