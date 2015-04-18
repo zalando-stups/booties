@@ -4,7 +4,7 @@
 
 ###spring-boot-starter-guava-eventbus
 
-[Simple integration of Guave-Eventbus](https://github.com/zalando-stups/booties/tree/master/spring-boot-starter-guava-eventbus).
+[Simple integration of Guava-Eventbus](https://github.com/zalando-stups/booties/tree/master/spring-boot-starter-guava-eventbus).
 
 ###spring-boot-starter-data-jpa-eclipselink
 
