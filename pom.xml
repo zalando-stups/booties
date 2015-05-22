@@ -1,5 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.zalando.stups.build</groupId>
+        <artifactId>stups-parent</artifactId>
+        <version>3</version>
+        <relativePath />
+    </parent>
     <groupId>org.zalando.stups</groupId>
     <artifactId>zalando-booties-parent</artifactId>
     <version>0.5.0-SNAPSHOT</version>
@@ -36,7 +42,7 @@
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
-                <version>2.0.0</version>
+                <version>3.0.0</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
@@ -79,35 +85,6 @@
             </plugins>
         </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.1</version>
-                <configuration>
-                    <tagNameFormat>@{project.version}</tagNameFormat>
-                    <mavenExecutorId>forked-path</mavenExecutorId>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <useReleaseProfile>false</useReleaseProfile>
-                    <arguments>-Pcustom-release,maven</arguments>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8.1</version>
-                <configuration>
-                    <deployAtEnd>true</deployAtEnd>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.2</version>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-scm-plugin</artifactId>
@@ -168,4 +145,11 @@
             </properties>
         </profile>
     </profiles>
+
+    <scm>
+        <url>https://github.com/zalando-stups/booties.git</url>
+        <connection>scm:git:https://github.com/zalando-stups/booties.gitconnection</connection>
+        <developerConnection>scm:git:https://github.com/zalando-stups/booties.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 </project>
