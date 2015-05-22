@@ -8,7 +8,7 @@
     </parent>
     <groupId>org.zalando.stups</groupId>
     <artifactId>zalando-booties-parent</artifactId>
-    <version>0.5.0</version>
+    <version>0.5.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -150,6 +150,6 @@
         <url>https://github.com/zalando-stups/booties.git</url>
         <connection>scm:git:https://github.com/zalando-stups/booties.gitconnection</connection>
         <developerConnection>scm:git:https://github.com/zalando-stups/booties.git</developerConnection>
-        <tag>0.5.0</tag>
+        <tag>HEAD</tag>
     </scm>
 </project>
