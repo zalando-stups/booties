@@ -16,6 +16,7 @@
 package com.unknown.pkg;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.assertj.core.api.Assertions;
 
@@ -53,19 +54,22 @@ public class TokenTestApplicationIT {
     private AccessTokensBean tokens;
 
     @Autowired
-    private AccessTokensBeanProperties tokenLifecycleProperties;
+    private AccessTokensBeanProperties accessTokensBeanProperties;
 
     @Autowired
     private AccessTokens accessTokens;
 
     @Test
     public void retrieveToken() throws InterruptedException {
-        Assertions.assertThat(tokenLifecycleProperties).isNotNull();
-        Assertions.assertThat(tokenLifecycleProperties.getTokenConfigurationList()).isNotEmpty();
+
+        // give the controller a chance to initialize
+        TimeUnit.SECONDS.sleep(4);
+        Assertions.assertThat(accessTokensBeanProperties).isNotNull();
+        Assertions.assertThat(accessTokensBeanProperties.getTokenConfigurationList()).isNotEmpty();
 
         Assertions.assertThat(accessTokens).isNotNull();
 
-        List<TokenConfiguration> services = tokenLifecycleProperties.getTokenConfigurationList();
+        List<TokenConfiguration> services = accessTokensBeanProperties.getTokenConfigurationList();
 
         Iterable<TokenConfiguration> firstServiceFilterResult = Iterables.filter(services,
                 new TokenIdFilter("firstService"));

@@ -22,11 +22,7 @@ import java.util.HashSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.factory.DisposableBean;
-
-import org.springframework.boot.context.embedded.EmbeddedServletContainerInitializedEvent;
-
-import org.springframework.context.ApplicationListener;
+import org.springframework.context.SmartLifecycle;
 
 import org.zalando.stups.tokens.config.AccessTokensBeanProperties;
 import org.zalando.stups.tokens.config.TokenConfiguration;
@@ -34,14 +30,15 @@ import org.zalando.stups.tokens.config.TokenConfiguration;
 /**
  * @author  jbellmann
  */
-public class AccessTokensBean implements DisposableBean, AccessTokens,
-    ApplicationListener<EmbeddedServletContainerInitializedEvent> {
+public class AccessTokensBean implements AccessTokens, SmartLifecycle {
 
     private final Logger logger = LoggerFactory.getLogger(AccessTokensBean.class);
 
     private AccessTokens accessTokensDelegate;
 
     private final AccessTokensBeanProperties accessTokensBeanProperties;
+
+    private volatile boolean running = false;
 
     public AccessTokensBean(final AccessTokensBeanProperties accessTokensBeanProperties) {
         this.accessTokensBeanProperties = accessTokensBeanProperties;
@@ -64,19 +61,6 @@ public class AccessTokensBean implements DisposableBean, AccessTokens,
         accessTokensDelegate.invalidate(tokenId);
     }
 
-    @Override
-    public void stop() {
-        logger.warn(
-            "There is no need to stop the 'AccessTokenRefresher' before the container stops. This call does nothing. Sorry.");
-    }
-
-    @Override
-    public void destroy() throws Exception {
-        logger.info("Stop 'accessTokenRefresher' ...");
-        accessTokensDelegate.stop();
-        logger.info("'accessTokenRefresher' stopped.");
-    }
-
     protected UserCredentialsProvider getUserCredentialsProvider() {
 
         return new JsonFileBackedUserCredentialsProvider(getCredentialsFile(
@@ -90,12 +74,15 @@ public class AccessTokensBean implements DisposableBean, AccessTokens,
     }
 
     protected File getCredentialsFile(final String credentialsFilename) {
-
         return new File(accessTokensBeanProperties.getCredentialsDirectory(), credentialsFilename);
     }
 
     @Override
-    public void onApplicationEvent(final EmbeddedServletContainerInitializedEvent event) {
+    public synchronized void start() {
+        if (isRunning()) {
+            return;
+        }
+
         logger.info("Container seems up an running");
 
         // TODO, if something fails here, shall we shutdown the container?
@@ -112,6 +99,43 @@ public class AccessTokensBean implements DisposableBean, AccessTokens,
 
         logger.info("Start 'accessTokenRefresher' ...");
         accessTokensDelegate = builder.start();
+        running = true;
         logger.info("'accessTokenRefresher' started.");
+    }
+
+    @Override
+    public synchronized void stop() {
+        if (!isRunning()) {
+            return;
+        }
+
+        logger.info("Stop 'accessTokenRefresher' ...");
+        accessTokensDelegate.stop();
+        running = false;
+        logger.info("'accessTokenRefresher' stopped.");
+
+    }
+
+    @Override
+    public boolean isRunning() {
+        return running;
+    }
+
+    @Override
+    public int getPhase() {
+
+        // default
+        return 0;
+    }
+
+    @Override
+    public boolean isAutoStartup() {
+        return true;
+    }
+
+    @Override
+    public void stop(final Runnable callback) {
+        stop();
+        callback.run();
     }
 }
