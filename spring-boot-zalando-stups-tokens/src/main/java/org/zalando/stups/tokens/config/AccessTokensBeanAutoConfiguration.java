@@ -32,10 +32,10 @@ import org.zalando.stups.tokens.AccessTokensBean;
 public class AccessTokensBeanAutoConfiguration {
 
     @Autowired
-    private AccessTokensBeanProperties tokensLifecycleProperties;
+    private AccessTokensBeanProperties accessTokensBeanProperties;
 
     @Bean
-    public AccessTokensBean tokensLifecycle() {
-        return new AccessTokensBean(tokensLifecycleProperties);
+    public AccessTokensBean accessTokensBean() {
+        return new AccessTokensBean(accessTokensBeanProperties);
     }
 }

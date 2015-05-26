@@ -12,6 +12,9 @@
         <eclipselink.version>2.5.2</eclipselink.version>
 
         <main.basedir>${basedir}/..</main.basedir>
+
+        <java.source>1.7</java.source>
+        <java.target>1.7</java.target>
     </properties>
 
     <dependencies>
