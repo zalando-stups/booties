@@ -9,6 +9,9 @@
 
     <properties>
         <main.basedir>${basedir}/..</main.basedir>
+
+        <java.source>1.7</java.source>
+        <java.target>1.7</java.target>
     </properties>
 
     <dependencies>
