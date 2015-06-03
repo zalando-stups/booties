@@ -15,7 +15,6 @@
         <module>spring-boot-starter-data-jpa-eclipselink</module>
         <module>spring-boot-starter-guava-eventbus</module>
         <module>spring-boot-zalando-stups-twintip</module>
-        <module>spring-boot-zalando-stups-tokens</module>
     </modules>
 
     <properties>
