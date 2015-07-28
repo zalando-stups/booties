@@ -16,16 +16,16 @@
 package org.zalando.stups.eclipselink.application.entities;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
+
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 /**
  * @author  jbellmann
  */
 @Entity
-public class Person {
+public class Person extends AbstractPersistable<Long> {
 
-    @Id
-    private Long id;
+    private static final long serialVersionUID = 1L;
 
     private String name;
 

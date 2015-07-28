@@ -15,6 +15,9 @@
  */
 package org.zalando.stups.eclipselink.application;
 
+import javax.transaction.Transactional;
+
+import org.junit.Assert;
 import org.junit.Test;
 
 import org.junit.runner.RunWith;
@@ -35,6 +38,7 @@ import org.zalando.stups.eclipselink.application.entities.PersonRepository;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {ExampleApplication.class})
 @IntegrationTest
+@Transactional
 public class ExampleApplicationIT {
 
     @Autowired
@@ -43,7 +47,11 @@ public class ExampleApplicationIT {
     @Test
     public void runApplication() {
         Person p = new Person();
-        this.personRepository.save(p);
+        Person fromDB = this.personRepository.save(p);
+
+        Person read = this.personRepository.findOne(fromDB.getId());
+
+        Assert.assertNotNull(read);
     }
 
 }
