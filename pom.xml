@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.zalando.stups.build</groupId>
         <artifactId>stups-parent</artifactId>
-        <version>3</version>
+        <version>6</version>
         <relativePath />
     </parent>
     <groupId>org.zalando.stups</groupId>
