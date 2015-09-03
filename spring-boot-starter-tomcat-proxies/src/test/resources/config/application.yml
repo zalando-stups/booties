@@ -1,0 +1,16 @@
+server:
+  port: 12080
+
+#
+# connector customization is disabled completely
+#
+booties:
+    tomcat:
+      proxies:
+          enabled: false
+          customizers:
+              - enabled: true
+                port: 12080
+                proxy-port: 443
+                scheme: https
+                proxy-name: klaus.test.company.com
