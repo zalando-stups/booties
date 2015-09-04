@@ -7,3 +7,6 @@ bin
 createDDL.jdbc
 *.log
 .DS_Store
+
+pom.xml.release*
+release.properties
