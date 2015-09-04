@@ -1,4 +1,0 @@
-twintip:
-    schemaUrl: http://custom:1234/swagger-whatever.json
-    schemaType: swagger-unreleased
-    uiUrl: http://custom:1234/ui/
