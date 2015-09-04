@@ -1,0 +1,16 @@
+= Booties - Zalando-Technologie loves Spring-Boot
+:github: https://github.com/zalando-stups/booties
+:githubmaster: {github}/tree/master
+:docslink: {githubmaster}/docs/src/main/asciidoc
+
+include::intro.adoc[]
+
+== Booties for https://stups.io[STUPS]
+
+include::spring-boot-zalando-stups-twintip.adoc[]
+
+== Non- https://stups.io[STUPS] Booties
+
+include::spring-boot-starter-tomcat-proxies.adoc[]
+include::spring-boot-starter-guava-eventbus.adoc[]
+include::spring-boot-starter-data-jpa-eclipselink.adoc[]
