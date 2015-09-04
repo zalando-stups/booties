@@ -156,7 +156,7 @@
                         <version>1.1</version>
                         <configuration>
                             <serverId>zal-stups-swagger-codegen-tooling</serverId>
-                            <pubScmUrl>scm:git:https://github.com/zalando-stups/swagger-codegen-tooling.git</pubScmUrl>
+                            <pubScmUrl>scm:git:https://github.com/zalando-stups/booties.git</pubScmUrl>
                             <scmBranch>gh-pages</scmBranch>
                             <checkinComment>Updated Documentation</checkinComment>
                             <content>${project.build.directory}/generated-docs</content>
