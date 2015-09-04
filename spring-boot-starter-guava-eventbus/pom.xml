@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.zalando.stups</groupId>
         <artifactId>booties-parent</artifactId>
-        <version>1-SNAPSHOT</version>
+        <version>1</version>
         <relativePath/>
     </parent>
     <artifactId>spring-boot-starter-guava-eventbus</artifactId>
