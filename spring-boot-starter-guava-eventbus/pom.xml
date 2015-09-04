@@ -2,10 +2,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.zalando.stups</groupId>
-        <artifactId>zalando-booties-parent</artifactId>
-        <version>0.5.5-SNAPSHOT</version>
+        <artifactId>booties-parent</artifactId>
+        <version>1-SNAPSHOT</version>
+        <relativePath/>
     </parent>
     <artifactId>spring-boot-starter-guava-eventbus</artifactId>
+    <version>0.9.0-SNAPSHOT</version>
 
     <properties>
         <main.basedir>${basedir}/..</main.basedir>
@@ -83,4 +85,11 @@
             </plugin>
         </plugins>
     </build>
+
+    <scm>
+        <url>https://github.com/zalando-stups/booties.git</url>
+        <connection>scm:git:https://github.com/zalando-stups/booties.git</connection>
+        <developerConnection>scm:git:https://github.com/zalando-stups/booties.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 </project>

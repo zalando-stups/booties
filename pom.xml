@@ -1,17 +1,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.zalando.stups.build</groupId>
-        <artifactId>stups-parent</artifactId>
-        <version>6</version>
+        <groupId>org.zalando.stups</groupId>
+        <artifactId>booties-parent</artifactId>
+        <version>1-SNAPSHOT</version>
         <relativePath />
     </parent>
-    <groupId>org.zalando.stups</groupId>
-    <artifactId>zalando-booties-parent</artifactId>
-    <version>0.5.5-SNAPSHOT</version>
+    <artifactId>booties-reactor</artifactId>
+    <version>0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
+        <module>booties-parent-poms/booties-parent</module>
         <module>spring-boot-starter-data-jpa-eclipselink</module>
         <module>spring-boot-starter-guava-eventbus</module>
         <module>spring-boot-zalando-stups-twintip</module>
@@ -22,90 +22,11 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <spring-boot.version>1.2.5.RELEASE</spring-boot.version>
-
-        <java.source>1.8</java.source>
-        <java.target>1.8</java.target>
-
         <coveralls.dryRun>true</coveralls.dryRun>
-        <main.basedir>${basedir}</main.basedir>
-        <argLine />
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <!-- Import dependency management from Spring Boot -->
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.assertj</groupId>
-                <artifactId>assertj-core</artifactId>
-                <version>3.0.0</version>
-                <scope>test</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.7.4.201502262128</version>
-                    <executions>
-                        <execution>
-                            <id>default-prepare-agent</id>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>default-prepare-agent-integration</id>
-                            <goals>
-                                <goal>prepare-agent-integration</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>default-report</id>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>default-report-integration</id>
-                            <goals>
-                                <goal>report-integration</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.2</version>
-                <configuration>
-                    <source>${java.source}</source>
-                    <target>${java.target}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-scm-plugin</artifactId>
-                <version>1.9.2</version>
-                <configuration>
-                    <connectionType>connection</connectionType>
-                    <tag>${project.version}</tag>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
@@ -114,31 +35,11 @@
                     <dryRun>${coveralls.dryRun}</dryRun>
                     <jacocoReports>
                         <jacocoReport>spring-boot-zalando-stups-twintip/target/site/jacoco-it/jacoco.xml</jacocoReport>
-                        <jacocoReport>spring-boot-zalando-stups-tokens/target/site/jacoco-it/jacoco.xml</jacocoReport>
+                        <jacocoReport>spring-boot-starter-tomcat-proxies/target/site/jacoco-it/jacoco.xml</jacocoReport>
                         <jacocoReport>spring-boot-starter-guava-eventbus/target/site/jacoco-it/jacoco.xml</jacocoReport>
                         <jacocoReport>spring-boot-starter-data-jpa-eclipselink/target/site/jacoco-it/jacoco.xml</jacocoReport>
                     </jacocoReports>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>2.8</version>
-                <configuration>
-                    <header>${main.basedir}/src/etc/header.txt</header>
-                    <includes>
-                        <include>src/main/java/**/*.java</include>
-                        <include>src/test/java/**/*.java</include>
-                    </includes>
-                    <strictCheck>true</strictCheck>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

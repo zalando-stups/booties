@@ -2,19 +2,15 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.zalando.stups</groupId>
-        <artifactId>zalando-booties-parent</artifactId>
-        <version>0.5.5-SNAPSHOT</version>
+        <artifactId>booties-parent</artifactId>
+        <version>1-SNAPSHOT</version>
+        <relativePath/>
     </parent>
-    <groupId>org.zalando.stups</groupId>
     <artifactId>spring-boot-starter-data-jpa-eclipselink</artifactId>
+    <version>0.9.0-SNAPSHOT</version>
 
     <properties>
         <eclipselink.version>2.6.0</eclipselink.version>
-
-        <main.basedir>${basedir}/..</main.basedir>
-
-        <java.source>1.7</java.source>
-        <java.target>1.7</java.target>
     </properties>
 
     <dependencies>
@@ -102,4 +98,11 @@
             </plugin>
         </plugins>
     </build>
+
+    <scm>
+        <url>https://github.com/zalando-stups/booties.git</url>
+        <connection>scm:git:https://github.com/zalando-stups/booties.git</connection>
+        <developerConnection>scm:git:https://github.com/zalando-stups/booties.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 </project>
