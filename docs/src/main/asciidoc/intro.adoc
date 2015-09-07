@@ -1,8 +1,8 @@
 Goal of this project is to provide some small libraries maybe useful in your Spring-Boot projects.
 
-Most of them use "Spring-Boot's" magic of "AutoConfiguration".
+Most of them use "Spring-Boot's magic of AutoConfiguration".
 
-Drop the dependency into your pom.xml or build.gradle and do nothing or just a little bit of configuration in the application.yml/application.properties.
+Drop the dependency into your _pom.xml_ or _build.gradle_ and do nothing more or just a little bit of configuration in the _application.yml/application.properties._
 
 That's it. Enjoy.
 

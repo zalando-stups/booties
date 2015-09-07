@@ -1,4 +1,4 @@
-= Booties - Zalando-Technologie loves Spring-Boot
+= Booties - Zalando-Tech loves Spring-Boot
 :github: https://github.com/zalando-stups/booties
 :githubmaster: {github}/tree/master
 :docslink: {githubmaster}/docs/src/main/asciidoc
