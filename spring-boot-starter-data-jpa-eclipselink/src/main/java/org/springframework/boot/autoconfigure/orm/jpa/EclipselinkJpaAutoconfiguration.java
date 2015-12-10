@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.orm.jpa;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
 import javax.persistence.SharedCacheMode;
 import javax.sql.DataSource;
 
@@ -40,7 +39,6 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.AbstractJpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.util.ClassUtils;
 
 /**
@@ -49,9 +47,7 @@ import org.springframework.util.ClassUtils;
  * @author  jbellmann
  */
 @Configuration
-@ConditionalOnClass(
-    { LocalContainerEntityManagerFactoryBean.class, EnableTransactionManagement.class, EntityManager.class }
-)
+@ConditionalOnClass({ LocalContainerEntityManagerFactoryBean.class})
 @Conditional(EclipseLinkEntityManagerCondition.class)
 @AutoConfigureAfter({ DataSourceAutoConfiguration.class, JtaAutoConfiguration.class })
 public class EclipselinkJpaAutoconfiguration extends JpaBaseConfiguration {
