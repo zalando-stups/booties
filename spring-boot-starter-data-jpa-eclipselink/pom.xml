@@ -10,7 +10,7 @@
     <version>0.9.0-SNAPSHOT</version>
 
     <properties>
-        <eclipselink.version>2.6.0</eclipselink.version>
+        <eclipselink.version>2.6.1</eclipselink.version>
     </properties>
 
     <dependencies>
