@@ -89,6 +89,7 @@
                     <links>
                         <link>http://docs.oracle.com/javase/7/docs/api</link>
                     </links>
+                    <additionalparam></additionalparam>
                 </configuration>
             </plugin>
             <plugin>
