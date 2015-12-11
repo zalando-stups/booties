@@ -90,7 +90,7 @@ public class EclipselinkJpaAutoconfiguration extends JpaBaseConfiguration {
      * Same as for hibernate only changed class-names.
      */
     @Order(Ordered.HIGHEST_PRECEDENCE + 20)
-    static class EclipseLinkEntityManagerCondition extends SpringBootCondition {
+    public static class EclipseLinkEntityManagerCondition extends SpringBootCondition {
 
         private static String[] CLASS_NAMES = {"org.eclipse.persistence.jpa.JpaEntityManager"};
 

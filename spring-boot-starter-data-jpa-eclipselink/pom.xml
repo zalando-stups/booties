@@ -11,6 +11,8 @@
 
     <properties>
         <eclipselink.version>2.6.1</eclipselink.version>
+        <java.source>1.7</java.source>
+        <java.target>1.7</java.target>
     </properties>
 
     <dependencies>
