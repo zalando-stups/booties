@@ -102,7 +102,7 @@ public class EclipselinkJpaAutoconfiguration extends JpaBaseConfiguration {
                 }
             }
 
-            return ConditionOutcome.match("did not find EclipselinkEntityManager class");
+            return ConditionOutcome.noMatch("did not find EclipselinkEntityManager class");
         }
 
     }
