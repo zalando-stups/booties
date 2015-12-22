@@ -18,7 +18,7 @@ package org.springframework.boot.autoconfigure.orm.jpa;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.persistence.SharedCacheMode;
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +27,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jta.JtaAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.EclipselinkJpaAutoconfiguration.EclipseLinkEntityManagerCondition;
-import org.springframework.boot.autoconfigure.orm.jpa.EntityManagerFactoryBuilder.EntityManagerFactoryBeanCallback;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
@@ -39,6 +37,7 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.AbstractJpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.util.ClassUtils;
 
 /**
@@ -47,14 +46,16 @@ import org.springframework.util.ClassUtils;
  * @author  jbellmann
  */
 @Configuration
-@ConditionalOnClass({ LocalContainerEntityManagerFactoryBean.class})
+@ConditionalOnClass({ LocalContainerEntityManagerFactoryBean.class,
+	EnableTransactionManagement.class, EntityManager.class })
 @Conditional(EclipseLinkEntityManagerCondition.class)
-@AutoConfigureAfter({ DataSourceAutoConfiguration.class, JtaAutoConfiguration.class })
+@AutoConfigureAfter({ DataSourceAutoConfiguration.class})
 public class EclipselinkJpaAutoconfiguration extends JpaBaseConfiguration {
 
     @Autowired
     private JpaProperties properties;
 
+    // TODO, resolve ddl-strategy by datasource-type
     @Autowired
     private DataSource dataSource;
 
@@ -70,21 +71,16 @@ public class EclipselinkJpaAutoconfiguration extends JpaBaseConfiguration {
         return vendorProperties;
     }
 
-    @Override
-    protected EntityManagerFactoryBeanCallback getVendorCallback() {
-        return new EclipseLinkEntityManagerFactoryBeanCallback();
-    }
-
-    /**
-     * Not quite sure, is this configured by default?
-     */
-    static final class EclipseLinkEntityManagerFactoryBeanCallback implements EntityManagerFactoryBeanCallback {
-
-        @Override
-        public void execute(final LocalContainerEntityManagerFactoryBean factory) {
-            factory.setSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
-        }
-    }
+//    /**
+//     * Not quite sure, is this configured by default?
+//     */
+//    public static final class EclipseLinkEntityManagerFactoryBeanCallback implements EntityManagerFactoryBeanCallback {
+//
+//        @Override
+//        public void execute(final LocalContainerEntityManagerFactoryBean factory) {
+//            factory.setSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
+//        }
+//    }
 
     /**
      * Same as for hibernate only changed class-names.
