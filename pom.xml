@@ -12,6 +12,7 @@
         <module>spring-boot-zalando-stups-twintip</module>
         <module>spring-boot-starter-tomcat-proxies</module>
         <module>spring-boot-ext</module>
+        <module>misc/github-client-parent</module>
     </modules>
 
     <properties>
