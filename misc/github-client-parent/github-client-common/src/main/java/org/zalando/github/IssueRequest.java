@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * @author jbellmann
  *
  */
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class IssueRequest {
 
 	private String title;
@@ -31,7 +31,7 @@ public class IssueRequest {
 
 	private String assignee;
 
-	private int milestone;
+	private Integer milestone;
 
 	private String[] labels = new String[0];
 
@@ -59,11 +59,11 @@ public class IssueRequest {
 		this.assignee = assignee;
 	}
 
-	public int getMilestone() {
+	public Integer getMilestone() {
 		return milestone;
 	}
 
-	public void setMilestone(int milestone) {
+	public void setMilestone(Integer milestone) {
 		this.milestone = milestone;
 	}
 
