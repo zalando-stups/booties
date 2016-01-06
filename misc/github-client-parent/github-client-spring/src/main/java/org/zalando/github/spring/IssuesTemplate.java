@@ -24,6 +24,7 @@ import java.util.Map;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 import org.zalando.github.Issue;
@@ -37,10 +38,10 @@ import org.zalando.github.IssuesOperations;
  */
 public class IssuesTemplate implements IssuesOperations {
 
-	private RestTemplate restTemplate;
+	private RestOperations restOperations;
 
-	public IssuesTemplate(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
+	public IssuesTemplate(RestOperations restOperations) {
+		this.restOperations = restOperations;
 	}
 
 	@Override
@@ -68,12 +69,12 @@ public class IssuesTemplate implements IssuesOperations {
 		RequestEntity<IssueRequest> entity = RequestEntity.post(uri).contentType(MediaType.APPLICATION_JSON)
 				.body(issueRequest);
 
-		ResponseEntity<Issue> responseEntity = getRestTemplate().exchange(entity, Issue.class);
+		ResponseEntity<Issue> responseEntity = getRestOperations().exchange(entity, Issue.class);
 		return responseEntity.getBody();
 	}
 
-	protected RestTemplate getRestTemplate() {
-		return restTemplate;
+	protected RestOperations getRestOperations() {
+		return restOperations;
 	}
 
 	protected UriTemplate buildUriTemplate(String path) {
