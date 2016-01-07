@@ -19,7 +19,7 @@
 	private GitHub socialGithub;
 
 	//somewhere in a method
-	IssueRequest issue = new org.zalando.github.IssueRequest();
+	IssueRequest issue = new IssueRequest();
 	issue.setAssignee("klaus");
 	issue.setTitle("TEST_" + UUID.randomUUID().toString());
 	Issue response = new IssuesTemplate(socialGithub.restOperations()).createIssue(issue, "zalando-stups", "stupsback-admin");
