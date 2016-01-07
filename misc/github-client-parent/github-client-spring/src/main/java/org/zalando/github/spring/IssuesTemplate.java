@@ -16,16 +16,16 @@
 package org.zalando.github.spring;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestOperations;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 import org.zalando.github.Issue;
 import org.zalando.github.IssueRequest;
@@ -36,27 +36,35 @@ import org.zalando.github.IssuesOperations;
  * @author jbellmann
  *
  */
-public class IssuesTemplate implements IssuesOperations {
+public class IssuesTemplate extends AbstractGithubTemplate implements IssuesOperations {
 
-	private RestOperations restOperations;
+	private final ParameterizedTypeReference<List<Issue>> issueListTypeRef = new ParameterizedTypeReference<List<Issue>>() {
+	};
 
 	public IssuesTemplate(RestOperations restOperations) {
-		this.restOperations = restOperations;
+		super(restOperations);
 	}
 
+	//TODO, pagination
 	@Override
 	public List<Issue> listAllIssues() {
-		return new ArrayList<Issue>(0);
+		return getRestOperations().exchange(buildUri("/issues"), HttpMethod.GET, null, issueListTypeRef).getBody();
 	}
 
+	//TODO, pagination
 	@Override
 	public List<Issue> listUserIssues() {
-		return new ArrayList<Issue>(0);
+		return getRestOperations().exchange(buildUri("/user/issues"), HttpMethod.GET, null, issueListTypeRef).getBody();
 	}
 
+	//TODO, pagination
 	@Override
 	public List<Issue> listOrganizationIssues(String organization) {
-		return new ArrayList<Issue>(0);
+		Map<String, Object> uriVariables = new HashMap<>();
+		uriVariables.put("organization", organization);
+		return getRestOperations()
+				.exchange(buildUri("/orgs/{organization}/issues", uriVariables), HttpMethod.GET, null, issueListTypeRef)
+				.getBody();
 	}
 
 	@Override
@@ -71,18 +79,6 @@ public class IssuesTemplate implements IssuesOperations {
 
 		ResponseEntity<Issue> responseEntity = getRestOperations().exchange(entity, Issue.class);
 		return responseEntity.getBody();
-	}
-
-	protected RestOperations getRestOperations() {
-		return restOperations;
-	}
-
-	protected UriTemplate buildUriTemplate(String path) {
-		return new UriTemplate(buildUriString(path));
-	}
-
-	protected String buildUriString(String path) {
-		return "https://api.github.com" + path;
 	}
 
 }

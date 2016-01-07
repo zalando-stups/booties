@@ -10,3 +10,5 @@ createDDL.jdbc
 
 pom.xml.release*
 release.properties
+
+*.iml

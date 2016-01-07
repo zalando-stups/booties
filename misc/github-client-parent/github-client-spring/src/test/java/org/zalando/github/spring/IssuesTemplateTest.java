@@ -20,44 +20,28 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.web.client.RestTemplate;
 import org.zalando.github.Issue;
 import org.zalando.github.IssueRequest;
 
-public class IssuesTemplateTest {
+public class IssuesTemplateTest extends AbstractTemplateTest {
 
 	protected IssuesTemplate issuesTemplate;
-	protected MockRestServiceServer mockServer;
-	protected HttpHeaders responseHeaders;
 
 	@Before
-	public void setup() {
-		RestTemplate restTemplate = new RestTemplate();
+	public void setupTemplate() {
 		this.issuesTemplate = new IssuesTemplate(restTemplate);
-		// this.gitHub = new GitHubTemplate("ACCESS_TOKEN");
-		this.mockServer = MockRestServiceServer.createServer(restTemplate);
-
-		this.responseHeaders = new HttpHeaders();
-		responseHeaders.setContentType(MediaType.APPLICATION_JSON);
-
-		// this.unauthorizedGitHub = new GitHubTemplate();
-
-		// Create a mock server just to avoid hitting real GitHub if something
-		// gets past the authorization check.
-		// MockRestServiceServer.createServer(unauthorizedGitHub.getRestTemplate());
 	}
 
 	@Test
-	public void getUserProfile() throws Exception {
+	public void createIssue() throws Exception {
 		mockServer.expect(requestTo("https://api.github.com/repos/klaus/simple/issues"))
 				.andExpect(method(HttpMethod.POST)).andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				// .andExpect(header("Authorization", "Bearer ACCESS_TOKEN"))
@@ -70,8 +54,45 @@ public class IssuesTemplateTest {
 		Assertions.assertThat(issue.getId()).isEqualTo(1);
 	}
 
-	protected Resource jsonResource(String filename) {
-		return new ClassPathResource(filename + ".json", getClass());
-	}
+	@Test
+	public void listAllIssues() throws Exception {
+		mockServer.expect(requestTo("https://api.github.com/issues")).andExpect(method(HttpMethod.GET))
+				// .andExpect(header("Authorization", "Bearer ACCESS_TOKEN"))
+				.andRespond(
+						withSuccess(new ClassPathResource("listIssues.json", getClass()), MediaType.APPLICATION_JSON));
 
+		List<Issue> issueList = issuesTemplate.listAllIssues();
+
+		Assertions.assertThat(issueList).isNotNull();
+		Assertions.assertThat(issueList.size()).isEqualTo(1);
+		Assertions.assertThat(issueList.get(0).getId()).isEqualTo(1);
+	}
+	
+	@Test
+	public void listUserIssues() throws Exception {
+		mockServer.expect(requestTo("https://api.github.com/user/issues")).andExpect(method(HttpMethod.GET))
+				// .andExpect(header("Authorization", "Bearer ACCESS_TOKEN"))
+				.andRespond(
+						withSuccess(new ClassPathResource("listIssues.json", getClass()), MediaType.APPLICATION_JSON));
+
+		List<Issue> issueList = issuesTemplate.listUserIssues();
+
+		Assertions.assertThat(issueList).isNotNull();
+		Assertions.assertThat(issueList.size()).isEqualTo(1);
+		Assertions.assertThat(issueList.get(0).getId()).isEqualTo(1);
+	}
+	
+	@Test
+	public void listOrgaIssues() throws Exception {
+		mockServer.expect(requestTo("https://api.github.com/orgs/zalando-stups/issues")).andExpect(method(HttpMethod.GET))
+				// .andExpect(header("Authorization", "Bearer ACCESS_TOKEN"))
+				.andRespond(
+						withSuccess(new ClassPathResource("listIssues.json", getClass()), MediaType.APPLICATION_JSON));
+
+		List<Issue> issueList = issuesTemplate.listOrganizationIssues("zalando-stups");
+
+		Assertions.assertThat(issueList).isNotNull();
+		Assertions.assertThat(issueList.size()).isEqualTo(1);
+		Assertions.assertThat(issueList.get(0).getId()).isEqualTo(1);
+	}
 }
