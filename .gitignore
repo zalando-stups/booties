@@ -12,3 +12,4 @@ pom.xml.release*
 release.properties
 
 *.iml
+.idea
