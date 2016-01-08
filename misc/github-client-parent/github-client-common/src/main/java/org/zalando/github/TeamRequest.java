@@ -28,6 +28,11 @@ public class TeamRequest {
 
 	private String privacy = "secret";
 
+	/**
+	 * 
+	 * @param name
+	 *            is mandatory
+	 */
 	public TeamRequest(String name) {
 		this.name = name;
 	}

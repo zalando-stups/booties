@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class IssueRequest {
 
-	private String title;
+	private final String title;
 
 	private String body;
 
@@ -35,12 +35,16 @@ public class IssueRequest {
 
 	private String[] labels = new String[0];
 
-	public String getTitle() {
-		return title;
+	/**
+	 * @param title
+	 *            is mandatory
+	 */
+	public IssueRequest(String title) {
+		this.title = title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public String getTitle() {
+		return title;
 	}
 
 	public String getBody() {

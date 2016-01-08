@@ -48,7 +48,7 @@ public class IssuesTemplateTest extends AbstractTemplateTest {
 				.andRespond(
 						withSuccess(new ClassPathResource("createIssue.json", getClass()), MediaType.APPLICATION_JSON));
 
-		Issue issue = issuesTemplate.createIssue(new IssueRequest(), "klaus", "simple");
+		Issue issue = issuesTemplate.createIssue(new IssueRequest("issueTitle"), "klaus", "simple");
 
 		Assertions.assertThat(issue).isNotNull();
 		Assertions.assertThat(issue.getId()).isEqualTo(1);
