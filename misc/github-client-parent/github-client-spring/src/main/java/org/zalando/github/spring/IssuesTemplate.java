@@ -44,17 +44,21 @@ public class IssuesTemplate extends AbstractGithubTemplate implements IssuesOper
 	public IssuesTemplate(RestOperations restOperations) {
 		super(restOperations);
 	}
+	
+	public IssuesTemplate(RestOperations restOperations, GithubApiUriUtil githubApiUriUtil) {
+		super(restOperations, githubApiUriUtil);
+	}
 
 	//TODO, pagination
 	@Override
 	public List<Issue> listAllIssues() {
-		return getRestOperations().exchange(buildUri("/issues"), HttpMethod.GET, null, issueListTypeRef).getBody();
+		return getRestOperations().exchange(buildUri("/issues?per_page=25"), HttpMethod.GET, null, issueListTypeRef).getBody();
 	}
 
 	//TODO, pagination
 	@Override
 	public List<Issue> listUserIssues() {
-		return getRestOperations().exchange(buildUri("/user/issues"), HttpMethod.GET, null, issueListTypeRef).getBody();
+		return getRestOperations().exchange(buildUri("/user/issues?per_page=25"), HttpMethod.GET, null, issueListTypeRef).getBody();
 	}
 
 	//TODO, pagination
@@ -63,7 +67,7 @@ public class IssuesTemplate extends AbstractGithubTemplate implements IssuesOper
 		Map<String, Object> uriVariables = new HashMap<>();
 		uriVariables.put("organization", organization);
 		return getRestOperations()
-				.exchange(buildUri("/orgs/{organization}/issues", uriVariables), HttpMethod.GET, null, issueListTypeRef)
+				.exchange(buildUri("/orgs/{organization}/issues?per_page=25", uriVariables), HttpMethod.GET, null, issueListTypeRef)
 				.getBody();
 	}
 

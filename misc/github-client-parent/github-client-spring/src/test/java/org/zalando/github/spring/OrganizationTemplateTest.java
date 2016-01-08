@@ -48,7 +48,7 @@ public class OrganizationTemplateTest extends AbstractTemplateTest {
 
 	@Test
 	public void listAllOrganizations() throws Exception {
-		mockServer.expect(requestTo("https://api.github.com/organizations")).andExpect(method(HttpMethod.GET))
+		mockServer.expect(requestTo("https://api.github.com/organizations?per_page=100")).andExpect(method(HttpMethod.GET))
 				// .andExpect(header("Authorization", "Bearer ACCESS_TOKEN"))
 				.andRespond(
 						withSuccess(new ClassPathResource("listOrgas.json", getClass()), MediaType.APPLICATION_JSON));
@@ -61,7 +61,7 @@ public class OrganizationTemplateTest extends AbstractTemplateTest {
 
 	@Test
 	public void listOrganizationsForCurrentUser() throws Exception {
-		mockServer.expect(requestTo("https://api.github.com/user/orgs")).andExpect(method(HttpMethod.GET))
+		mockServer.expect(requestTo("https://api.github.com/user/orgs?per_page=25")).andExpect(method(HttpMethod.GET))
 				// .andExpect(header("Authorization", "Bearer ACCESS_TOKEN"))
 				.andRespond(
 						withSuccess(new ClassPathResource("listOrgas.json", getClass()), MediaType.APPLICATION_JSON));
@@ -73,8 +73,8 @@ public class OrganizationTemplateTest extends AbstractTemplateTest {
 	}
 
 	@Test
-	public void deleteEmails() throws Exception {
-		mockServer.expect(requestTo("https://api.github.com/user/klaus/orgs")).andExpect(method(HttpMethod.GET))
+	public void listUserOrganizations() throws Exception {
+		mockServer.expect(requestTo("https://api.github.com/user/klaus/orgs?per_page=25")).andExpect(method(HttpMethod.GET))
 				// .andExpect(header("Authorization", "Bearer ACCESS_TOKEN"))
 				.andRespond(
 						withSuccess(new ClassPathResource("listOrgas.json", getClass()), MediaType.APPLICATION_JSON));

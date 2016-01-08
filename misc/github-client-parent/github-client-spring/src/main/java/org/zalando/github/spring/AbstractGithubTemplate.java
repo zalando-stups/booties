@@ -24,10 +24,17 @@ import org.springframework.web.util.UriTemplate;
 
 public abstract class AbstractGithubTemplate {
 
-	private RestOperations restOperations;
+	private final RestOperations restOperations;
+
+	private final GithubApiUriUtil uriUtil;
 
 	public AbstractGithubTemplate(RestOperations restOperations) {
+		this(restOperations, new GithubApiUriUtil());
+	}
+
+	public AbstractGithubTemplate(RestOperations restOperations, GithubApiUriUtil uriUtil) {
 		this.restOperations = restOperations;
+		this.uriUtil = uriUtil;
 	}
 
 	public RestOperations getRestOperations() {
@@ -35,19 +42,23 @@ public abstract class AbstractGithubTemplate {
 	}
 
 	protected UriTemplate buildUriTemplate(String path) {
-		return new UriTemplate(buildUriString(path));
+		// return new UriTemplate(buildUriString(path));
+		return uriUtil.buildUriTemplate(path);
 	}
 
 	protected URI buildUri(String path, Map<String, Object> uriVariables) {
-		return new UriTemplate(buildUriString(path)).expand(uriVariables);
+		// return new UriTemplate(buildUriString(path)).expand(uriVariables);
+		return uriUtil.buildUri(path, uriVariables);
 	}
 
 	protected URI buildUri(String path) {
-		return buildUri(path, new HashMap<String, Object>(0));
+		// return buildUri(path, new HashMap<String, Object>(0));
+		return uriUtil.buildUri(path, new HashMap<String, Object>(0));
 	}
 
 	protected String buildUriString(String path) {
-		return "https://api.github.com" + path;
+		// return "https://api.github.com" + path;
+		return uriUtil.buildUriString(path);
 	}
 
 }

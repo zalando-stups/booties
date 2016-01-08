@@ -15,13 +15,14 @@
  */
 package org.zalando.github.spring;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.web.client.RestOperations;
@@ -29,6 +30,7 @@ import org.zalando.github.ExtOrganization;
 import org.zalando.github.Organization;
 import org.zalando.github.OrganizationUpdate;
 import org.zalando.github.OrganizationsOperations;
+import org.zalando.github.spring.pagination.PagingIterator;
 
 public class OrganizationsTemplate extends AbstractGithubTemplate implements OrganizationsOperations {
 
@@ -38,34 +40,28 @@ public class OrganizationsTemplate extends AbstractGithubTemplate implements Org
 	public OrganizationsTemplate(RestOperations restOperations) {
 		super(restOperations);
 	}
+	
+	public  OrganizationsTemplate(RestOperations restOperations, GithubApiUriUtil githubApiUriUtil) {
+		super(restOperations, githubApiUriUtil);
+	}
 
 	@Override
 	public List<Organization> listAllOranizations() {
-		// return getRestOperations().exchange(buildUri("/organizations"),
-		// HttpMethod.GET, null, emailListTypeRef)
-		// .getBody();
-
-		return listOrganizations("/organizations");
+		return listOrganizations("/organizations?per_page=100");
 	}
 
 	@Override
 	public List<Organization> listOrganizations() {
-		// return getRestOperations().exchange(buildUri("/user/orgs"),
-		// HttpMethod.GET, null, emailListTypeRef).getBody();
 
-		return listOrganizations("/user/orgs");
+		return listOrganizations("/user/orgs?per_page=25");
 	}
 
 	@Override
 	public List<Organization> listUserOrganizations(String username) {
 		Map<String, Object> uriVariables = new HashMap<>();
 		uriVariables.put("username", username);
-		// return getRestOperations()
-		// .exchange(buildUri("/user/{username}/orgs", uriVariables),
-		// HttpMethod.GET, null, emailListTypeRef)
-		// .getBody();
 
-		return listOrganizations("/user/{username}/orgs", uriVariables);
+		return listOrganizations("/user/{username}/orgs?per_page=25", uriVariables);
 	}
 
 	protected List<Organization> listOrganizations(String path) {
@@ -73,8 +69,12 @@ public class OrganizationsTemplate extends AbstractGithubTemplate implements Org
 	}
 
 	protected List<Organization> listOrganizations(String path, Map<String, Object> uriVariables) {
-		return getRestOperations().exchange(buildUri(path, uriVariables), HttpMethod.GET, null, orgaListTypeRef)
-				.getBody();
+		List<Organization> result = new ArrayList<Organization>();
+		Iterator<List<Organization>> iter = new PagingIterator<>(getRestOperations(), buildUri(path, uriVariables), orgaListTypeRef);
+		while(iter.hasNext()){
+			result.addAll(iter.next());
+		}
+		return result;
 	}
 
 	@Override

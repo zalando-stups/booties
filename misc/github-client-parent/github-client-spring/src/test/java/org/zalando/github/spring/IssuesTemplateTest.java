@@ -56,7 +56,7 @@ public class IssuesTemplateTest extends AbstractTemplateTest {
 
 	@Test
 	public void listAllIssues() throws Exception {
-		mockServer.expect(requestTo("https://api.github.com/issues")).andExpect(method(HttpMethod.GET))
+		mockServer.expect(requestTo("https://api.github.com/issues?per_page=25")).andExpect(method(HttpMethod.GET))
 				// .andExpect(header("Authorization", "Bearer ACCESS_TOKEN"))
 				.andRespond(
 						withSuccess(new ClassPathResource("listIssues.json", getClass()), MediaType.APPLICATION_JSON));
@@ -70,7 +70,7 @@ public class IssuesTemplateTest extends AbstractTemplateTest {
 	
 	@Test
 	public void listUserIssues() throws Exception {
-		mockServer.expect(requestTo("https://api.github.com/user/issues")).andExpect(method(HttpMethod.GET))
+		mockServer.expect(requestTo("https://api.github.com/user/issues?per_page=25")).andExpect(method(HttpMethod.GET))
 				// .andExpect(header("Authorization", "Bearer ACCESS_TOKEN"))
 				.andRespond(
 						withSuccess(new ClassPathResource("listIssues.json", getClass()), MediaType.APPLICATION_JSON));
@@ -84,7 +84,7 @@ public class IssuesTemplateTest extends AbstractTemplateTest {
 	
 	@Test
 	public void listOrgaIssues() throws Exception {
-		mockServer.expect(requestTo("https://api.github.com/orgs/zalando-stups/issues")).andExpect(method(HttpMethod.GET))
+		mockServer.expect(requestTo("https://api.github.com/orgs/zalando-stups/issues?per_page=25")).andExpect(method(HttpMethod.GET))
 				// .andExpect(header("Authorization", "Bearer ACCESS_TOKEN"))
 				.andRespond(
 						withSuccess(new ClassPathResource("listIssues.json", getClass()), MediaType.APPLICATION_JSON));
