@@ -19,6 +19,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.util.UriTemplate;
 
@@ -38,6 +39,10 @@ public abstract class AbstractGithubTemplate {
 	}
 
 	public RestOperations getRestOperations() {
+		return restOperations;
+	}
+	
+	public RestOperations getRestOperations(ResponseErrorHandler responseErrorHandler) {
 		return restOperations;
 	}
 
