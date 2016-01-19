@@ -15,12 +15,16 @@
  */
 package org.zalando.github.spring;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+
 import org.junit.Before;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.client.RestTemplate;
 
 public abstract class AbstractTemplateTest {
@@ -47,5 +51,9 @@ public abstract class AbstractTemplateTest {
 
 	protected Resource jsonResource(String filename) {
 		return new ClassPathResource(filename + ".json", getClass());
+	}
+
+	public static String resourceToString(Resource resource) throws IOException {
+		return StreamUtils.copyToString(resource.getInputStream(), Charset.defaultCharset());
 	}
 }

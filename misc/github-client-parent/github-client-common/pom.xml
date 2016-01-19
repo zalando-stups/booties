@@ -18,5 +18,9 @@
             <artifactId>lombok</artifactId>
             <version>1.16.6</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
     </dependencies>
 </project>
