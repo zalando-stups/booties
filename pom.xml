@@ -13,6 +13,7 @@
         <module>spring-boot-starter-tomcat-proxies</module>
         <module>spring-boot-ext</module>
         <module>misc/github-client-parent</module>
+        <module>misc/junit-postgres</module>
     </modules>
 
     <properties>
