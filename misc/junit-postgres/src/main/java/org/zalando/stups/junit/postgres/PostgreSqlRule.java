@@ -327,7 +327,7 @@ public class PostgreSqlRule extends ExternalResource {
         // for now compare by path
         @Override
         public int compareTo(ExtFileSystemResource o) {
-            return o.getPath().compareTo(o.getPath());
+            return getPath().compareTo(o.getPath());
         }
     }
 }
