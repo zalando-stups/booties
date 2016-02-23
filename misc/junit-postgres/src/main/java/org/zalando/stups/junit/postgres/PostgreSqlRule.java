@@ -34,6 +34,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
 
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import ru.yandex.qatools.embed.postgresql.Command;
@@ -109,6 +110,7 @@ public class PostgreSqlRule extends ExternalResource {
             if (directory.exists() && directory.isDirectory()) {
                 Resource[] resources = scanner.scanForResources(location, "", ".sql");
                 ResourceDatabasePopulator populator = new ResourceDatabasePopulator(resources);
+                populator.setSeparator(builder.separator);
                 populator.execute(ds);
             } else {
                 // log not existing directory
@@ -141,6 +143,7 @@ public class PostgreSqlRule extends ExternalResource {
         private Version version = Version.V9_4_4;
         private List<String> locations = new LinkedList<String>();
         private boolean fullExtractOutput = false;
+        private String separator = ScriptUtils.EOF_STATEMENT_SEPARATOR;
 
         public Builder withPort(int port) {
             this.port = port;
@@ -169,6 +172,19 @@ public class PostgreSqlRule extends ExternalResource {
 
         public Builder withFullExtractionOutput() {
             this.fullExtractOutput = true;
+            return this;
+        }
+
+        /**
+         * Define a separator to use while processing the script.
+         * 
+         * @param separator
+         *            ScriptUtils#EOF_STATEMENT_SEPARATOR
+         * @return
+         * @see ScriptUtils#EOF_STATEMENT_SEPARATOR
+         */
+        public Builder withSeparator(String separator) {
+            this.separator = separator;
             return this;
         }
 
