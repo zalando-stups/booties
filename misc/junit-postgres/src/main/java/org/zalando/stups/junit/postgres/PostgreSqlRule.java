@@ -56,6 +56,8 @@ public class PostgreSqlRule extends ExternalResource {
 
     private final Logger log = LoggerFactory.getLogger(PostgreSqlRule.class);
 
+    public static final String SKIP_POSTGRE_SQL_RULE = "skipPostgreSqlRule";
+
     private PostgresProcess process;
 
     private Builder builder;
@@ -66,6 +68,10 @@ public class PostgreSqlRule extends ExternalResource {
 
     @Override
     protected void before() throws Throwable {
+        if (System.getProperty(builder.skipProperty) != null) {
+            log.info("Skip PostgreSqlRule because of existing property '" + builder.skipProperty + "'");
+            return;
+        }
         IRuntimeConfig runtimeConfig = new RuleRuntimeConfigBuilder()
                 .defaults(Command.Postgres, builder.fullExtractOutput).build();
 
@@ -136,6 +142,7 @@ public class PostgreSqlRule extends ExternalResource {
 
     public static class Builder {
 
+
         private int port = 5432;
         private String username = "postgres";
         private String password = "postgres";
@@ -144,6 +151,7 @@ public class PostgreSqlRule extends ExternalResource {
         private List<String> locations = new LinkedList<String>();
         private boolean fullExtractOutput = false;
         private String separator = ScriptUtils.EOF_STATEMENT_SEPARATOR;
+        private String skipProperty = SKIP_POSTGRE_SQL_RULE;
 
         public Builder withPort(int port) {
             this.port = port;
@@ -185,6 +193,11 @@ public class PostgreSqlRule extends ExternalResource {
          */
         public Builder withSeparator(String separator) {
             this.separator = separator;
+            return this;
+        }
+
+        public Builder skipOnProperty(String skipProperty) {
+            this.skipProperty = skipProperty;
             return this;
         }
 
