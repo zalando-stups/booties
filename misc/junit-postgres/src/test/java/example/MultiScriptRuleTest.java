@@ -27,7 +27,7 @@ public class MultiScriptRuleTest {
 
     @ClassRule
     public static final PostgreSqlRule postgres = new PostgreSqlRule.Builder()
-            .addScriptLocation(projectBaseDir(BlockScriptRuleTest.class) + "/multiscripts").build();
+            .addScriptLocation(projectBaseDir(MultiScriptRuleTest.class) + "/multiscripts").build();
 
     @Test
     public void runTest() throws InterruptedException {
