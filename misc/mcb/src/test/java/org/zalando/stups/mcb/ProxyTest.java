@@ -19,8 +19,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.assertj.core.api.Assertions;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class ProxyTest {
 
     @Test
