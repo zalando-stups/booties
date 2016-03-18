@@ -31,7 +31,7 @@ import org.zalando.stups.junit.postgres.PostgreSqlRule;
 public class DirectoryLayoutRuleTest {
 
     @ClassRule
-    public static final PostgreSqlRule postgres = new PostgreSqlRule.Builder()
+    public static final PostgreSqlRule postgres = new PostgreSqlRule.Builder().withPort(5435)
             .addScriptLocation(projectBaseDir(DirectoryLayoutRuleTest.class) + "/dbscripts").build();
 
     @Test
