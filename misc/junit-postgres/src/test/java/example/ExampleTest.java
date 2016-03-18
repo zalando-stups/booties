@@ -25,7 +25,8 @@ import org.zalando.stups.junit.postgres.PostgreSqlRule;
 public class ExampleTest {
 
     @ClassRule
-    public static final PostgreSqlRule postgres = new PostgreSqlRule.Builder().addScriptLocation(getScriptDirectory())
+    public static final PostgreSqlRule postgres = new PostgreSqlRule.Builder().withPort(5434)
+            .addScriptLocation(getScriptDirectory())
             .build();
 
     @Test

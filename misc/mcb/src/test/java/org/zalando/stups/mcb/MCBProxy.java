@@ -13,29 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package example;
+package org.zalando.stups.mcb;
 
-import static org.zalando.stups.junit.postgres.MavenProjectLayout.projectBaseDir;
+import java.lang.reflect.Proxy;
 
-import java.util.concurrent.TimeUnit;
+public class MCBProxy {
 
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.zalando.stups.junit.postgres.PostgreSqlRule;
-
-/**
- * 
- * @author jbellmann
- *
- */
-public class DirectoryLayoutRuleTest {
-
-    @ClassRule
-    public static final PostgreSqlRule postgres = new PostgreSqlRule.Builder().withPort(5435)
-            .addScriptLocation(projectBaseDir(DirectoryLayoutRuleTest.class) + "/dbscripts").build();
-
-    @Test
-    public void runTest() throws InterruptedException {
-        TimeUnit.SECONDS.sleep(3);
+    public static <T> T proxy(T target, Class<T> iface){
+        return proxy(target, iface, McbInvocationHandler.NOT_SET);
     }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T proxy(T target, Class<T> iface, Object def) {
+        return (T) Proxy.newProxyInstance(iface.getClassLoader(), new Class[] { iface },
+                new McbInvocationHandler(new MCB(), target, def));
+    }
+
 }
