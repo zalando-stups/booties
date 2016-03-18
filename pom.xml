@@ -15,6 +15,7 @@
         <module>misc/github-client-parent</module>
         <module>misc/junit-postgres</module>
         <module>misc/junit-redis</module>
+        <module>misc/mcb</module>
     </modules>
 
     <properties>
