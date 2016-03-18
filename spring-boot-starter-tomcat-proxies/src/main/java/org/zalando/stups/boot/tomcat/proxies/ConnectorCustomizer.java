@@ -28,7 +28,7 @@ public class ConnectorCustomizer {
 
     private String scheme = "https";
 
-    private String proxyName = "localhost";
+    private String proxyName = "";
 
     private int proxyPort = 80;
 
