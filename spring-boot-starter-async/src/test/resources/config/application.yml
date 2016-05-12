@@ -1,0 +1,14 @@
+#
+
+debug: true
+
+logging:
+  level:
+    org.zalando.spring.boot: info
+
+spring:
+  async:
+    executor:
+      thread-name-prefix: my-async-
+  scheduling:
+    core-pool-size: 12
