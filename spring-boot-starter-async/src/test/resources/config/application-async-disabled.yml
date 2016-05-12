@@ -1,9 +1,9 @@
 #
 debug: true
 
-spring:
-  async:
-    executor:
-      enabled: false
-  scheduling:
+async:
+  executor:
+    enabled: false
+scheduling:
+  executor:
     thread-name-prefix: my-sched-

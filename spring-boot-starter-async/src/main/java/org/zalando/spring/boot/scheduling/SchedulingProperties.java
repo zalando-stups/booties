@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "spring.scheduling")
+@ConfigurationProperties(prefix = "scheduling.executor")
 public class SchedulingProperties {
 
     private boolean enabled = true;

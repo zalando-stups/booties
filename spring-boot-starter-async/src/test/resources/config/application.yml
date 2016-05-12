@@ -6,9 +6,14 @@ logging:
   level:
     org.zalando.spring.boot: info
 
-spring:
-  async:
-    executor:
-      thread-name-prefix: my-async-
-  scheduling:
+async:
+  executor:
+    core-pool-size: 30
+    max-pool-size: 45
+    queue-capacity: 350
+    thread-name-prefix: my-async-
+scheduling:
+  executor:
     core-pool-size: 12
+    max-pool-size: 20
+    thread-name-prefix: my-sched-
