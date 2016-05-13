@@ -13,3 +13,5 @@ release.properties
 
 *.iml
 .idea
+
+.factorypath
