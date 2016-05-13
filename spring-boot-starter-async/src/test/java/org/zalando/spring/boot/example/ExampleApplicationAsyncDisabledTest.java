@@ -30,7 +30,7 @@ import org.zalando.spring.boot.example.job.ExampleJob;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { ExampleApplication.class })
-@WebIntegrationTest
+@WebIntegrationTest(randomPort = true)
 @ActiveProfiles("async-disabled")
 public class ExampleApplicationAsyncDisabledTest {
 

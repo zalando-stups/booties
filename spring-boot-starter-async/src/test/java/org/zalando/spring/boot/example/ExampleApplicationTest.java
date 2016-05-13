@@ -27,7 +27,7 @@ import org.zalando.spring.boot.example.job.ExampleJob;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { ExampleApplication.class })
-@WebIntegrationTest
+@WebIntegrationTest(randomPort = true)
 public class ExampleApplicationTest {
 
     @Autowired
