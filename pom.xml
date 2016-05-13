@@ -17,6 +17,7 @@
         <module>misc/junit-redis</module>
         <module>misc/mcb</module>
         <module>spring-boot-starter-async</module>
+        <module>booties-examples</module>
     </modules>
 
     <properties>

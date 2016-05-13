@@ -1,0 +1,12 @@
+debug: true
+
+async:
+  executor:
+    core-pool-size: 5
+    max-pool-size: 7
+    thread-name-prefix: example-async-
+scheduling:
+  executor:
+    core-pool-size: 2
+    max-pool-size: 4
+    thread-name-prefix: example-sched-

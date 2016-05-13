@@ -15,19 +15,20 @@
  */
 package org.zalando.spring.boot.scheduling;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.interceptor.AsyncExecutionAspectSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Role;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor;
@@ -43,8 +44,8 @@ public class CustomSchedulingConfiguration implements SchedulingConfigurer {
     private final Logger log = LoggerFactory.getLogger(CustomSchedulingConfiguration.class);
 
     @Autowired(required = false)
-    @Qualifier("taskExecutor")
-    private Executor executor;
+    @Qualifier(AsyncExecutionAspectSupport.DEFAULT_TASK_EXECUTOR_BEAN_NAME)
+    private TaskExecutor executor;
 
     @Autowired
     private SchedulingProperties properties;

@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.zalando.spring.boot.example.job.ExampleJob;
 
@@ -32,6 +33,10 @@ public class ExampleApplicationTest {
 
     @Autowired
     private ExampleJob job;
+
+    @Autowired
+    // @Qualifier("taskExecutor")
+    private ThreadPoolTaskExecutor executor;
 
     @Test
     public void startUp() throws InterruptedException {
