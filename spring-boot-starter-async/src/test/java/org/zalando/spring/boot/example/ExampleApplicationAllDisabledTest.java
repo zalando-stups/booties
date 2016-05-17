@@ -15,15 +15,17 @@
  */
 package org.zalando.spring.boot.example;
 
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.zalando.spring.boot.example.job.ExampleJob;
 
@@ -31,17 +33,22 @@ import org.zalando.spring.boot.example.job.ExampleJob;
 @SpringApplicationConfiguration(classes = { ExampleApplication.class })
 @DirtiesContext
 @WebIntegrationTest(randomPort = true)
-public class ExampleApplicationTest {
+@ActiveProfiles("all-disabled")
+public class ExampleApplicationAllDisabledTest {
 
     @Autowired
     private ExampleJob job;
 
-    @Autowired
-    // @Qualifier("taskExecutor")
-    private ThreadPoolTaskExecutor executor;
+    @Autowired(required = false)
+    @Qualifier("taskScheduler")
+    private Executor executor;
 
     @Test
     public void startUp() throws InterruptedException {
+        if (executor != null) {
+
+            System.out.println(executor.getClass().getName());
+        }
         TimeUnit.SECONDS.sleep(3);
         job.run();
         TimeUnit.SECONDS.sleep(2);

@@ -20,14 +20,16 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.interceptor.AsyncExecutionAspectSupport;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Role;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.ProxyAsyncConfiguration;
@@ -38,15 +40,28 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @EnableAsync
 public class AsyncExecutorConfiguration implements AsyncConfigurer {
 
+    private final Logger log = LoggerFactory.getLogger(AsyncExecutorConfiguration.class);
+
     @Autowired
     private AsyncExecutorProperties properties;
 
-    @Autowired
+    @Autowired(required = false)
     private ThreadPoolTaskExecutor executor;
 
     @Override
     public Executor getAsyncExecutor() {
-        return executor;
+        if (properties.isEnabled()) {
+            if (executor != null) {
+                return executor;
+            } else {
+                throw new BeanCreationException("Expecting a 'ThreadPoolTaskExecutor' injected, but was 'null'");
+            }
+        } else {
+            log.info(
+                    "'AsyncExecutorConfiguration' is disabled, so create 'SimpleAsyncTaskExecutor' with 'threadNamePrefix' - '{}'",
+                    properties.getThreadNamePrefix());
+            return new SimpleAsyncTaskExecutor(properties.getThreadNamePrefix());
+        }
     }
 
     @Override
@@ -63,6 +78,7 @@ public class AsyncExecutorConfiguration implements AsyncConfigurer {
     }
 
     @Configuration
+    @AutoConfigureBefore({ ProxyAsyncConfiguration.class })
     public static class ThreadPoolTaskExecutorConfiguration {
 
         private final Logger log = LoggerFactory.getLogger(ThreadPoolTaskExecutorConfiguration.class);
@@ -70,7 +86,8 @@ public class AsyncExecutorConfiguration implements AsyncConfigurer {
         @Autowired
         private AsyncExecutorProperties properties;
 
-        @Bean(name = AsyncExecutionAspectSupport.DEFAULT_TASK_EXECUTOR_BEAN_NAME)
+        @ConditionalOnProperty(prefix = "async.executor", name = "enabled", matchIfMissing = true)
+        @Bean(name = "taskExecutor")
         @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
         public ThreadPoolTaskExecutor threadPoolTaskExecutor() {
             log.info("Creating Async Pool with core-size={} max-size={} queue-capacity={}",

@@ -15,19 +15,29 @@
  */
 package org.zalando.spring.boot.example.job;
 
+import static java.lang.Thread.currentThread;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.zalando.spring.boot.async.AsyncExecutorProperties;
 
 @Component
 public class ExampleJob {
 
     private final Logger log = LoggerFactory.getLogger(ExampleJob.class);
 
+    @Autowired
+    private AsyncExecutorProperties asyncExecutorProperties;
+
     @Async
     public void run() {
         log.info("RUN EXAMPLE JOB");
+        log.info("thread-name : {}", currentThread().getName());
+        assertThat(currentThread().getName().startsWith(asyncExecutorProperties.getThreadNamePrefix()));
     }
 
 }

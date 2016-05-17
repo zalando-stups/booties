@@ -4,6 +4,7 @@ debug: true
 async:
   executor:
     enabled: false
+    thread-name-prefix: async-dis-async-
 scheduling:
   executor:
-    thread-name-prefix: my-sched-
+    thread-name-prefix: async-dis-sched-

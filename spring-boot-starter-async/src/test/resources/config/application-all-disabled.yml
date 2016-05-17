@@ -1,0 +1,11 @@
+#
+debug: true
+
+async:
+  executor:
+    enabled: false
+    thread-name-prefix: all-dis-async-
+scheduling:
+  executor:
+    enabled: false
+    thread-name-prefix: all-dis-sched-
