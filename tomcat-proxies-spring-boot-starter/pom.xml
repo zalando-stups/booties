@@ -7,7 +7,7 @@
         <relativePath />
     </parent>
     <artifactId>tomcat-proxies-spring-boot-starter</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.1-SNAPSHOT</version>
 
     <properties>
         <main.basedir>${basedir}/..</main.basedir>
@@ -88,6 +88,6 @@
         <url>https://github.com/zalando-stups/booties.git</url>
         <connection>scm:git:https://github.com/zalando-stups/booties.git</connection>
         <developerConnection>scm:git:https://github.com/zalando-stups/booties.git</developerConnection>
-        <tag>tomcat-proxies-spring-boot-starter-0.9.0</tag>
+        <tag>HEAD</tag>
     </scm>
 </project>
