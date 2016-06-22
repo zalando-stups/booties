@@ -7,7 +7,7 @@ In your pom.xml add the following snippet:
     ...
     <dependency>
         <groupId>org.zalando.stups</groupId>
-        <artifactId>spring-boot-starter-data-jpa-eclipselink</artifactId>
+        <artifactId>data-jpa-eclipselink-spring-boot-starter</artifactId>
         <version>${version}</version>
     </dependency>
     ....
