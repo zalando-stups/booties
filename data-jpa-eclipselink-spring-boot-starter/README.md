@@ -1,3 +1,6 @@
+
+![Maven Central](https://img.shields.io/maven-central/v/org.zalando.stups/data-jpa-eclipselink-spring-boot-starter.svg)
+
 ###How to use
 
 This starter autoconfigures an EclipseLink-EntityManager for JPA with Spring-Boot configuration-magic.
