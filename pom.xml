@@ -9,7 +9,7 @@
         <module>booties-parent-poms/booties-parent</module>
         <module>data-jpa-eclipselink-spring-boot-starter</module>
         <module>guava-eventbus-spring-boot-starter</module>
-        <module>spring-boot-zalando-stups-twintip</module>
+        <module>stups-twintip-spring-boot-starter</module>
         <module>tomcat-proxies-spring-boot-starter</module>
         <module>spring-boot-ext</module>
         <module>misc/github-client-parent</module>
