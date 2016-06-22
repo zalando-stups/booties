@@ -4,10 +4,10 @@
         <groupId>org.zalando.stups</groupId>
         <artifactId>booties-parent</artifactId>
         <version>3</version>
-        <relativePath/>
+        <relativePath />
     </parent>
     <artifactId>stups-twintip-spring-boot-starter</artifactId>
-    <version>0.9.0-SNAPSHOT</version>
+    <version>0.9.0</version>
 
     <properties>
         <main.basedir>${basedir}/..</main.basedir>
@@ -87,6 +87,6 @@
         <url>https://github.com/zalando-stups/booties.git</url>
         <connection>scm:git:https://github.com/zalando-stups/booties.git</connection>
         <developerConnection>scm:git:https://github.com/zalando-stups/booties.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>stups-twintip-spring-boot-starter-0.9.0</tag>
     </scm>
 </project>
