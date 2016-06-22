@@ -7,7 +7,7 @@
 
     <modules>
         <module>booties-parent-poms/booties-parent</module>
-        <module>spring-boot-starter-data-jpa-eclipselink</module>
+        <module>data-jpa-eclipselink-spring-boot-starter</module>
         <module>spring-boot-starter-guava-eventbus</module>
         <module>spring-boot-zalando-stups-twintip</module>
         <module>spring-boot-starter-tomcat-proxies</module>
