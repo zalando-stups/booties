@@ -7,7 +7,7 @@
 		<relativePath />
 	</parent>
 	<artifactId>workarounds-spring-boot</artifactId>
-	<version>0.9.1-SNAPSHOT</version>
+	<version>0.10.0</version>
 
 	<properties>
 	</properties>
@@ -84,6 +84,6 @@
 		<url>https://github.com/zalando-stups/booties.git</url>
 		<connection>scm:git:https://github.com/zalando-stups/booties.git</connection>
 		<developerConnection>scm:git:https://github.com/zalando-stups/booties.git</developerConnection>
-	  <tag>HEAD</tag>
+	  <tag>workarounds-spring-boot-0.10.0</tag>
   </scm>
 </project>
