@@ -6,7 +6,7 @@
         <version>2</version>
         <relativePath/>
     </parent>
-    <artifactId>spring-boot-starter-guava-eventbus</artifactId>
+    <artifactId>guava-eventbus-spring-boot-starter</artifactId>
     <version>0.9.0-SNAPSHOT</version>
 
     <properties>
