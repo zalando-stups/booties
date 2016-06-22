@@ -21,7 +21,7 @@
         </dependency>
         <dependency>
             <groupId>org.zalando.stups</groupId>
-            <artifactId>spring-boot-starter-async</artifactId>
+            <artifactId>async-spring-boot-starter</artifactId>
             <version>0.5.2-SNAPSHOT</version>
         </dependency>
         <dependency>
