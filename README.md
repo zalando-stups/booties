@@ -6,26 +6,19 @@
 
 Some starters that helps integration of your application into [STUPS - Platform](http://stups.io).
 
-###spring-boot-zalando-stups-twintip
+###stups-twintip-spring-boot-starter
 
 [Zalando-STUPS-Twintip Support](https://github.com/zalando-stups/booties/tree/master/spring-boot-zalando-stups-twintip).
 
-###spring-boot-zalando-stups-tokens
-
-[Zalando-STUPS-Tokens Support](https://github.com/zalando-stups/booties/tree/master/spring-boot-zalando-stups-tokens).
-
-
 ## NON-STUPS
 
-###spring-boot-starter-guava-eventbus
+###guava-eventbus-spring-boot-starter
 
-[Simple integration of Guava-Eventbus](https://github.com/zalando-stups/booties/tree/master/spring-boot-starter-guava-eventbus).
+[Simple integration of Guava-Eventbus](https://github.com/zalando-stups/booties/tree/master/guava-eventbus-spring-boot-starter).
 
-###spring-boot-starter-data-jpa-eclipselink
+###data-jpa-eclipselink-spring-boot-starter
 
-[If you don't like Hibernate you can use EclipseLink](https://github.com/zalando-stups/booties/tree/master/spring-boot-starter-data-jpa-eclipselink).
-
-
+[If you don't like Hibernate you can use EclipseLink](https://github.com/zalando-stups/booties/tree/master/data-jpa-eclipselink-spring-boot-starter).
 
 
 ## License
