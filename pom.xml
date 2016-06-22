@@ -11,7 +11,7 @@
         <module>guava-eventbus-spring-boot-starter</module>
         <module>stups-twintip-spring-boot-starter</module>
         <module>tomcat-proxies-spring-boot-starter</module>
-        <module>spring-boot-ext</module>
+        <module>workarounds-spring-boot</module>
         <module>misc/github-client-parent</module>
         <module>misc/junit-postgres</module>
         <module>misc/junit-redis</module>

@@ -6,7 +6,7 @@
 		<version>3</version>
 		<relativePath />
 	</parent>
-	<artifactId>spring-boot-ext</artifactId>
+	<artifactId>workarounds-spring-boot</artifactId>
 	<version>0.9.1-SNAPSHOT</version>
 
 	<properties>
@@ -50,11 +50,10 @@
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-			<version>2.0.0</version>
+			<version>3.0.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
 
 	<build>
 		<plugins>
