@@ -10,7 +10,7 @@
         <module>data-jpa-eclipselink-spring-boot-starter</module>
         <module>guava-eventbus-spring-boot-starter</module>
         <module>spring-boot-zalando-stups-twintip</module>
-        <module>spring-boot-starter-tomcat-proxies</module>
+        <module>tomcat-proxies-spring-boot-starter</module>
         <module>spring-boot-ext</module>
         <module>misc/github-client-parent</module>
         <module>misc/junit-postgres</module>
