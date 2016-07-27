@@ -16,6 +16,8 @@
 package org.zalando.stups.junit.redis;
 
 import org.junit.rules.ExternalResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import redis.embedded.RedisServer;
 import redis.embedded.RedisServerBuilder;
@@ -27,28 +29,55 @@ import redis.embedded.RedisServerBuilder;
  */
 public class RedisServerRule extends ExternalResource {
 
+    private final Logger log = LoggerFactory.getLogger(RedisServerRule.class);
+
+    public static final String SKIP_REDIS_RULE = "skipRedisRule";
+
     private RedisServer redisServer;
-    private final int port;
 
-    RedisServerRule(int port) {
-        this.port = port;
-    }
+    private final Builder builder;
 
-    public RedisServerRule() {
-        this(6379);
+    private RedisServerRule(Builder builder) {
+        this.builder = builder;
     }
 
     @Override
     protected void before() throws Throwable {
-        redisServer = new RedisServerBuilder().port(port).build();
+        if (System.getProperty(builder.skipProperty) != null) {
+            log.info("Skip RedisRule because of existing property '" + builder.skipProperty + "'");
+            return;
+        }
+        log.info("start Redis-Instance ...");
+        redisServer = new RedisServerBuilder().port(builder.port).build();
         redisServer.start();
+        log.info("Redis-Instance started.");
     }
 
     @Override
     protected void after() {
         if (redisServer != null) {
+            log.info("stopping Redis-Instance ...");
             redisServer.stop();
+            log.info("Redis-Instance stopped.");
         }
     }
 
+    public static class Builder {
+        private int port = 6379;
+        private String skipProperty = SKIP_REDIS_RULE;
+
+        public Builder withPort(int port) {
+            this.port = port;
+            return this;
+        }
+
+        public Builder withSkipOnProperty(String property) {
+            this.skipProperty = property;
+            return this;
+        }
+
+        public RedisServerRule build() {
+            return new RedisServerRule(this);
+        }
+    }
 }
