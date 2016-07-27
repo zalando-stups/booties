@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/zalando-stups/booties.svg?branch=master)](https://travis-ci.org/zalando-stups/booties) [![Coverage Status](https://coveralls.io/repos/zalando-stups/booties/badge.svg)](https://coveralls.io/r/zalando-stups/booties)
 
+[![Try Initializer](https://img.shields.io/badge/assemble%20your%20spring--boot--app%20with-Zalando%20OSS%20Initializr-orange.svg)](https://initializr.machinery.zalan.do)
+
 #Booties
 
 ##STUPS-Support
