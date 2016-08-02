@@ -16,9 +16,12 @@
 package org.zalando.spring.boot.async;
 
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Role;
 
 @ConfigurationProperties(prefix = "async.executor")
+@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 public class AsyncExecutorProperties {
 
     private boolean enabled = true;

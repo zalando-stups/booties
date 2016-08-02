@@ -15,6 +15,9 @@
  */
 package org.zalando.spring.boot.scheduling;
 
+import static org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcessor.DEFAULT_TASK_EXECUTOR_BEAN_NAME;
+import static org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor.DEFAULT_TASK_SCHEDULER_BEAN_NAME;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ScheduledExecutorService;
@@ -22,11 +25,17 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +43,6 @@ import org.springframework.context.annotation.Role;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
@@ -42,39 +50,20 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
 @Configuration
 @EnableScheduling
-public class CustomSchedulingConfiguration implements SchedulingConfigurer, DisposableBean {
+public class CustomSchedulingConfiguration {
 
-    private final Logger log = LoggerFactory.getLogger(CustomSchedulingConfiguration.class);
+    @Configuration
+    @AutoConfigureAfter(DefaultSchedulingConfiguration.class)
+    static class SchedulingConfigurerConfiguration {
 
-    @Autowired
-    private SchedulingProperties properties;
+        @Autowired
+        private SchedulingProperties properties;
 
-    @Autowired(required = false)
-    @Qualifier(ScheduledAnnotationBeanPostProcessor.DEFAULT_TASK_SCHEDULER_BEAN_NAME)
-    private ConcurrentTaskScheduler taskScheduler;
-
-    private ScheduledExecutorService localExecutor;
-
-    @Override
-    public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-        if (properties.isEnabled()) {
-            if (taskScheduler != null) {
-                taskRegistrar.setScheduler(taskScheduler);
-            } else {
-                throw new BeanCreationException("Expecting a 'ConcurrentTaskScheduler' injected, but was 'null'");
-            }
-        } else {
-            log.info("'CustomSchedulingConfiguration' is disabled, create a default - 'ConcurrentTaskScheduler'");
-            this.localExecutor = Executors.newSingleThreadScheduledExecutor();
-            taskRegistrar.setScheduler(new ConcurrentTaskScheduler(localExecutor));
+        @Bean
+        public CustomSchedulingConfigurer customSchedulingConfigurer() {
+            return new CustomSchedulingConfigurer(properties);
         }
-    }
 
-    @Override
-    public void destroy() throws Exception {
-        if (this.localExecutor != null) {
-            this.localExecutor.shutdownNow();
-        }
     }
 
     @Configuration
@@ -84,8 +73,8 @@ public class CustomSchedulingConfiguration implements SchedulingConfigurer, Disp
         private final Logger log = LoggerFactory.getLogger(DefaultSchedulingConfiguration.class);
 
         @Autowired(required = false)
-        @Qualifier("taskExecutor")
-        private TaskExecutor executor;
+        @Qualifier(DEFAULT_TASK_EXECUTOR_BEAN_NAME)
+        private TaskExecutor taskExecutor;
 
         @Autowired
         private SchedulingProperties properties;
@@ -115,16 +104,67 @@ public class CustomSchedulingConfiguration implements SchedulingConfigurer, Disp
             }
         }
 
-        @Bean(name = ScheduledAnnotationBeanPostProcessor.DEFAULT_TASK_SCHEDULER_BEAN_NAME)
+        @Bean(name = DEFAULT_TASK_SCHEDULER_BEAN_NAME)
         @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
         public TaskScheduler taskScheduler() {
-            if (executor != null) {
+            if (taskExecutor != null) {
                 log.debug("create task-scheduler with pre-configured executor ...");
-                return new ConcurrentTaskScheduler(executor, scheduledExecutorService());
+                return new ConcurrentTaskScheduler(taskExecutor, scheduledExecutorService());
             } else {
                 log.debug("create task-scheduler without pre-configured executor ...");
                 return new ConcurrentTaskScheduler(scheduledExecutorService());
             }
+        }
+    }
+
+    static class CustomSchedulingConfigurer implements SchedulingConfigurer, BeanFactoryAware, DisposableBean {
+
+        private final Logger log = LoggerFactory.getLogger(CustomSchedulingConfigurer.class);
+
+        private final SchedulingProperties properties;
+
+        private ScheduledExecutorService localExecutor;
+
+        private BeanFactory beanFactory;
+
+        public CustomSchedulingConfigurer(SchedulingProperties properties) {
+            this.properties = properties;
+        }
+
+        @Override
+        public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+            if (properties.isEnabled()) {
+                TaskScheduler taskScheduler = null;
+                try {
+                    taskScheduler = this.beanFactory.getBean(TaskScheduler.class);
+                } catch (NoUniqueBeanDefinitionException e) {
+                    taskScheduler = this.beanFactory.getBean("taskScheduler", TaskScheduler.class);
+                } catch (NoSuchBeanDefinitionException ex) {
+                    log.warn("'useExistingScheduler' was configured to 'true', but we did not find any bean.");
+                }
+                if (taskScheduler != null) {
+                    log.info("register existing TaskScheduler");
+                    taskRegistrar.setScheduler(taskScheduler);
+                } else {
+                    throw new BeanCreationException("Expecting a 'ConcurrentTaskScheduler' injected, but was 'null'");
+                }
+            } else {
+                log.info("'CustomSchedulingConfiguration' is disabled, create a default - 'ConcurrentTaskScheduler'");
+                this.localExecutor = Executors.newSingleThreadScheduledExecutor();
+                taskRegistrar.setScheduler(new ConcurrentTaskScheduler(localExecutor));
+            }
+        }
+
+        @Override
+        public void destroy() throws Exception {
+            if (this.localExecutor != null) {
+                this.localExecutor.shutdownNow();
+            }
+        }
+
+        @Override
+        public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+            this.beanFactory = beanFactory;
         }
     }
 }
