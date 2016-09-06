@@ -10,6 +10,7 @@
     <version>0.10.1-SNAPSHOT</version>
 
     <properties>
+        <spring-boot.version>1.4.0.RELEASE</spring-boot.version>
         <eclipselink.version>2.6.3</eclipselink.version>
         <java.source>1.7</java.source>
         <java.target>1.7</java.target>

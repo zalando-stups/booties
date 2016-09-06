@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
@@ -38,26 +39,32 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.AbstractJpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.jta.JtaTransactionManager;
 import org.springframework.util.ClassUtils;
 
 /**
  * Autoconfiguration for JPA with EclipseLink.
  *
- * @author  jbellmann
+ * @author jbellmann
  */
 @Configuration
-@ConditionalOnClass({ LocalContainerEntityManagerFactoryBean.class,
-	EnableTransactionManagement.class, EntityManager.class })
+@ConditionalOnClass({ LocalContainerEntityManagerFactoryBean.class, EnableTransactionManagement.class,
+        EntityManager.class })
 @Conditional(EclipseLinkEntityManagerCondition.class)
-@AutoConfigureAfter({ DataSourceAutoConfiguration.class})
+@AutoConfigureAfter({ DataSourceAutoConfiguration.class })
 public class EclipselinkJpaAutoconfiguration extends JpaBaseConfiguration {
+
+    protected EclipselinkJpaAutoconfiguration(DataSource dataSource, JpaProperties properties,
+            ObjectProvider<JtaTransactionManager> jtaTransactionManagerProvider) {
+        super(dataSource, properties, jtaTransactionManagerProvider);
+    }
 
     @Autowired
     private JpaProperties properties;
 
     // TODO, resolve ddl-strategy by datasource-type
-    @Autowired
-    private DataSource dataSource;
+//    @Autowired
+//    private DataSource dataSource;
 
     @Override
     protected AbstractJpaVendorAdapter createJpaVendorAdapter() {
@@ -71,16 +78,18 @@ public class EclipselinkJpaAutoconfiguration extends JpaBaseConfiguration {
         return vendorProperties;
     }
 
-//    /**
-//     * Not quite sure, is this configured by default?
-//     */
-//    public static final class EclipseLinkEntityManagerFactoryBeanCallback implements EntityManagerFactoryBeanCallback {
-//
-//        @Override
-//        public void execute(final LocalContainerEntityManagerFactoryBean factory) {
-//            factory.setSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
-//        }
-//    }
+    // /**
+    // * Not quite sure, is this configured by default?
+    // */
+    // public static final class EclipseLinkEntityManagerFactoryBeanCallback
+    // implements EntityManagerFactoryBeanCallback {
+    //
+    // @Override
+    // public void execute(final LocalContainerEntityManagerFactoryBean factory)
+    // {
+    // factory.setSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
+    // }
+    // }
 
     /**
      * Same as for hibernate only changed class-names.
@@ -88,7 +97,7 @@ public class EclipselinkJpaAutoconfiguration extends JpaBaseConfiguration {
     @Order(Ordered.HIGHEST_PRECEDENCE + 20)
     public static class EclipseLinkEntityManagerCondition extends SpringBootCondition {
 
-        private static String[] CLASS_NAMES = {"org.eclipse.persistence.jpa.JpaEntityManager"};
+        private static String[] CLASS_NAMES = { "org.eclipse.persistence.jpa.JpaEntityManager" };
 
         @Override
         public ConditionOutcome getMatchOutcome(final ConditionContext context, final AnnotatedTypeMetadata metadata) {
