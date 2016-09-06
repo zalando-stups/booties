@@ -7,7 +7,7 @@
         <relativePath />
     </parent>
     <artifactId>data-jpa-eclipselink-spring-boot-starter</artifactId>
-    <version>0.10.1-SNAPSHOT</version>
+    <version>0.10.1</version>
 
     <properties>
         <spring-boot.version>1.4.0.RELEASE</spring-boot.version>
@@ -120,6 +120,6 @@
         <url>https://github.com/zalando-stups/booties.git</url>
         <connection>scm:git:https://github.com/zalando-stups/booties.git</connection>
         <developerConnection>scm:git:https://github.com/zalando-stups/booties.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>data-jpa-eclipselink-spring-boot-starter-0.10.1</tag>
     </scm>
 </project>
