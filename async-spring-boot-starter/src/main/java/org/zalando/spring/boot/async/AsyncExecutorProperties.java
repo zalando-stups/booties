@@ -38,6 +38,10 @@ public class AsyncExecutorProperties {
 
     private String exceptionHandler = SimpleAsyncUncaughtExceptionHandler.class.getName();
 
+    private boolean daemons = false;
+
+    private boolean waitForTasksToCompleteOnShutdown = false;
+
     public int getCorePoolSize() {
         return corePoolSize;
     }
@@ -92,6 +96,22 @@ public class AsyncExecutorProperties {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public boolean isDaemons() {
+        return daemons;
+    }
+
+    public void setDaemons(boolean daemons) {
+        this.daemons = daemons;
+    }
+
+    public boolean isWaitForTasksToCompleteOnShutdown() {
+        return waitForTasksToCompleteOnShutdown;
+    }
+
+    public void setWaitForTasksToCompleteOnShutdown(boolean waitForTasksToCompleteOnShutdown) {
+        this.waitForTasksToCompleteOnShutdown = waitForTasksToCompleteOnShutdown;
     }
 
 }

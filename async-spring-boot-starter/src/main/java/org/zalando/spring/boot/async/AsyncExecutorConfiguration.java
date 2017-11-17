@@ -66,7 +66,7 @@ public class AsyncExecutorConfiguration {
         private final Logger log = LoggerFactory.getLogger(ThreadPoolTaskExecutorConfiguration.class);
 
         @ConditionalOnProperty(prefix = "async.executor", name = "enabled", matchIfMissing = true)
-        @Bean(name = DEFAULT_TASK_EXECUTOR_BEAN_NAME, destroyMethod = "shutdown")
+        @Bean(name = DEFAULT_TASK_EXECUTOR_BEAN_NAME)
         @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
         public ThreadPoolTaskExecutor threadPoolTaskExecutor(AsyncExecutorProperties properties) {
             log.info("Creating ThreadPoolTaskExecutor 'taskExecutor' with core-size={} max-size={} queue-capacity={}",
@@ -81,6 +81,9 @@ public class AsyncExecutorConfiguration {
             executor.setAwaitTerminationSeconds(properties.getAwaitTerminationSeconds());
 
             executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardOldestPolicy());
+
+            executor.setDaemon(properties.isDaemons());
+            executor.setWaitForTasksToCompleteOnShutdown(properties.isWaitForTasksToCompleteOnShutdown());
 
             executor.afterPropertiesSet();
             return executor;
