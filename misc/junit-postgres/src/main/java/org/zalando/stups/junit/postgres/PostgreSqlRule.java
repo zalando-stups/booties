@@ -17,9 +17,12 @@ package org.zalando.stups.junit.postgres;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -36,16 +39,7 @@ import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 
-import de.flapdoodle.embed.process.config.IRuntimeConfig;
-import ru.yandex.qatools.embed.postgresql.Command;
-import ru.yandex.qatools.embed.postgresql.PostgresExecutable;
-import ru.yandex.qatools.embed.postgresql.PostgresProcess;
-import ru.yandex.qatools.embed.postgresql.PostgresStarter;
-import ru.yandex.qatools.embed.postgresql.config.AbstractPostgresConfig.Credentials;
-import ru.yandex.qatools.embed.postgresql.config.AbstractPostgresConfig.Net;
-import ru.yandex.qatools.embed.postgresql.config.AbstractPostgresConfig.Storage;
-import ru.yandex.qatools.embed.postgresql.config.AbstractPostgresConfig.Timeout;
-import ru.yandex.qatools.embed.postgresql.config.PostgresConfig;
+import ru.yandex.qatools.embed.postgresql.EmbeddedPostgres;
 import ru.yandex.qatools.embed.postgresql.distribution.Version;
 
 /**
@@ -58,8 +52,7 @@ public class PostgreSqlRule extends ExternalResource {
 
     public static final String SKIP_POSTGRE_SQL_RULE = "skipPostgreSqlRule";
 
-    private PostgresProcess process;
-
+    private EmbeddedPostgres pg;
     private Builder builder;
 
     private PostgreSqlRule(Builder builder) {
@@ -72,21 +65,13 @@ public class PostgreSqlRule extends ExternalResource {
             log.info("Skip PostgreSqlRule because of existing property '" + builder.skipProperty + "'");
             return;
         }
-        IRuntimeConfig runtimeConfig = new RuleRuntimeConfigBuilder()
-                .defaults(Command.Postgres, builder.fullExtractOutput).build();
 
-        PostgresStarter<PostgresExecutable, PostgresProcess> runtime = new PostgresStarter(RulePostgresExecutable.class,
-                runtimeConfig);
+        pg = new EmbeddedPostgres(builder.version);
+        final String url = pg.start(EmbeddedPostgres.cachedRuntimeConfig(getCachedPath(builder.version)), "localhost", builder.port, builder.dbName, builder.username, builder.password,Collections.emptyList());
 
-        Net net = new PostgresConfig.Net("localhost", builder.port);
-        Credentials c = new PostgresConfig.Credentials(builder.username, builder.password);
-        Storage storage = new PostgresConfig.Storage(builder.dbName);
-        PostgresConfig config = new PostgresConfig(builder.version, net, storage, new Timeout(), c);
-        PostgresExecutable exec = runtime.prepare(config);
-        process = exec.start();
         log.info("PostgreSQL started");
         try {
-            applyScripts(config);
+            applyScripts(url);
         } catch (IOException e) {
             e.printStackTrace();
             stopPostgres();
@@ -99,16 +84,20 @@ public class PostgreSqlRule extends ExternalResource {
         }
     }
 
-    private void stopPostgres() {
-        log.info("Stopping PostgreSQL ...");
-        process.stop();
-        log.info("PostgreSQL-Process stopped");
-        process = null;
+    private Path getCachedPath(Version version) {
+        return Paths.get(System.getProperty("user.home"), ".embeddedPostgres", version.asInDownloadPath());
     }
 
-    private void applyScripts(PostgresConfig config) throws SQLException, IOException {
+    private void stopPostgres() {
+        log.info("Stopping PostgreSQL ...");
+        pg.stop();
+        log.info("PostgreSQL-Process stopped");
+        pg = null;
+    }
+
+    private void applyScripts(String url) throws SQLException, IOException {
         log.info("Apply Scripts ...");
-        Connection connection = getConnection(config);
+        Connection connection = getConnection(url);
         DataSource ds = new SingleConnectionDataSource(connection, false);
         FileSystemScanner scanner = new FileSystemScanner();
         for (String location : builder.locations) {
@@ -125,31 +114,26 @@ public class PostgreSqlRule extends ExternalResource {
         log.info("Scripts applied!");
     }
 
-    protected Connection getConnection(PostgresConfig config) throws SQLException {
-        // connecting to a running Postgres
-        String url = String.format("jdbc:postgresql://%s:%s/%s?user=%s&password=%s", config.net().host(),
-                config.net().port(), config.storage().dbName(), config.credentials().username(),
-                config.credentials().password());
+    protected Connection getConnection(String url) throws SQLException {
         return DriverManager.getConnection(url);
     }
 
     @Override
     protected void after() {
-        if (process != null) {
-            process.stop();
+        if(pg != null) {
+            pg.stop();
         }
     }
 
     public static class Builder {
 
-
         private int port = 5432;
         private String username = "postgres";
         private String password = "postgres";
         private String dbName = "test";
-        private Version version = Version.V9_6_1;
+        private Version version = Version.V10_1;
         private List<String> locations = new LinkedList<String>();
-        private boolean fullExtractOutput = false;
+//        private boolean fullExtractOutput = false;
         private String separator = ScriptUtils.EOF_STATEMENT_SEPARATOR;
         private String skipProperty = SKIP_POSTGRE_SQL_RULE;
 
@@ -178,10 +162,10 @@ public class PostgreSqlRule extends ExternalResource {
             return this;
         }
 
-        public Builder withFullExtractionOutput() {
-            this.fullExtractOutput = true;
-            return this;
-        }
+//        public Builder withFullExtractionOutput() {
+//            this.fullExtractOutput = true;
+//            return this;
+//        }
 
         /**
          * Define a separator to use while processing the script.
@@ -280,7 +264,6 @@ public class PostgreSqlRule extends ExternalResource {
          * @throws IOException
          *             when the folder could not be read.
          */
-        @SuppressWarnings("ConstantConditions")
         private Set<String> findResourceNamesFromFileSystem(String scanRootLocation, File folder) throws IOException {
             LOG.debug("Scanning for resources in path: " + folder.getPath() + " (" + scanRootLocation + ")");
 

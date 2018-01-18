@@ -8,13 +8,13 @@
     </parent>
     <groupId>org.zalando.stups</groupId>
     <artifactId>junit-postgres</artifactId>
-    <version>0.6.1-SNAPSHOT</version>
+    <version>0.7.1-SNAPSHOT</version>
 
     <properties>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <spring-boot.version>1.4.4.RELEASE</spring-boot.version>
+        <spring-boot.version>1.5.9.RELEASE</spring-boot.version>
 
         <java.source>1.8</java.source>
         <java.target>1.8</java.target>
@@ -22,7 +22,7 @@
         <coveralls.dryRun>true</coveralls.dryRun>
         <main.basedir>${basedir}</main.basedir>
 
-        <jacoco.version>0.7.8</jacoco.version>
+        <jacoco.version>0.8.0</jacoco.version>
 
         <argLine />
     </properties>
@@ -52,7 +52,7 @@
         <dependency>
             <groupId>ru.yandex.qatools.embed</groupId>
             <artifactId>postgresql-embedded</artifactId>
-            <version>1.20</version>
+            <version>2.6</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>

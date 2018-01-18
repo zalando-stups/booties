@@ -15,19 +15,16 @@
  */
 package org.zalando.stups.junit.postgres;
 
-import de.flapdoodle.embed.process.io.progress.StandardConsoleProgressListener;
+import org.junit.Test;
 
-/**
- * Just logs start and end.
- * 
- * @author jbellmann
- *
- */
-public class StartEndConsoleProgressListener extends StandardConsoleProgressListener {
+import ru.yandex.qatools.embed.postgresql.distribution.Version;
 
-    @Override
-    public void info(String label, String message) {
-        // ignore
+public class VersionToStringTest {
+
+    @Test
+    public void versionToString() {
+        String version = Version.V9_6_6.asInDownloadPath();
+        System.out.println(version);
     }
 
 }
