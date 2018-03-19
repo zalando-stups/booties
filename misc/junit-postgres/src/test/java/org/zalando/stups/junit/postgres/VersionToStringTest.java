@@ -23,7 +23,7 @@ public class VersionToStringTest {
 
     @Test
     public void versionToString() {
-        String version = Version.V9_6_6.asInDownloadPath();
+        String version = Version.V9_6_7.asInDownloadPath();
         System.out.println(version);
     }
 

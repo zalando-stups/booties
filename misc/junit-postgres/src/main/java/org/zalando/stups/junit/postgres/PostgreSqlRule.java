@@ -131,7 +131,7 @@ public class PostgreSqlRule extends ExternalResource {
         private String username = "postgres";
         private String password = "postgres";
         private String dbName = "test";
-        private Version version = Version.V10_1;
+        private Version version = Version.V10_2;
         private List<String> locations = new LinkedList<String>();
 //        private boolean fullExtractOutput = false;
         private String separator = ScriptUtils.EOF_STATEMENT_SEPARATOR;
@@ -162,11 +162,6 @@ public class PostgreSqlRule extends ExternalResource {
             return this;
         }
 
-//        public Builder withFullExtractionOutput() {
-//            this.fullExtractOutput = true;
-//            return this;
-//        }
-
         /**
          * Define a separator to use while processing the script.
          * 
@@ -182,6 +177,11 @@ public class PostgreSqlRule extends ExternalResource {
 
         public Builder skipOnProperty(String skipProperty) {
             this.skipProperty = skipProperty;
+            return this;
+        }
+
+        public Builder withVersion(Version version) {
+            this.version = version;
             return this;
         }
 
