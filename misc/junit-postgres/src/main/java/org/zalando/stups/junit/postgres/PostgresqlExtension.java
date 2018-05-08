@@ -18,6 +18,8 @@ package org.zalando.stups.junit.postgres;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zalando.stups.junit.postgres.PostgreSQL.Version;
 
 /**
@@ -27,6 +29,8 @@ import org.zalando.stups.junit.postgres.PostgreSQL.Version;
  *
  */
 public class PostgresqlExtension implements BeforeAllCallback, AfterAllCallback {
+    
+    private final Logger log = LoggerFactory.getLogger(PostgresqlExtension.class);
 
     private PostgreSqlRule rule;
 
@@ -51,22 +55,27 @@ public class PostgresqlExtension implements BeforeAllCallback, AfterAllCallback 
     }
 
     protected PostgreSqlRule buildRule(PostgreSQL annotation) {
-        PostgreSqlRule.Builder builder = new PostgreSqlRule.Builder()
-                                .withPort(annotation.port())
+        PostgreSqlRule.Builder builder = new PostgreSqlRule.Builder();
+        if (annotation != null) {
+
+            builder = builder.withPort(annotation.port())
                                 .withUsername(annotation.username())
                                 .withPassword(annotation.password())
                                 .withDbName(annotation.dbName())
                                 .withSeparator(annotation.separator())
                                 .skipOnProperty(annotation.skipProperty());
 
-        if(Version.V10.equals(annotation.version())) {
-            builder = builder.withVersion(ru.yandex.qatools.embed.postgresql.distribution.Version.V10_2);
-        }else {
-            builder = builder.withVersion(ru.yandex.qatools.embed.postgresql.distribution.Version.V9_6_7);
-        }
+            if (Version.V10.equals(annotation.version())) {
+                builder = builder.withVersion(ru.yandex.qatools.embed.postgresql.distribution.Version.V10_3);
+            } else {
+                builder = builder.withVersion(ru.yandex.qatools.embed.postgresql.distribution.Version.V9_6_8);
+            }
 
-        for(String location : annotation.locations()) {
-            builder = builder.addScriptLocation(location);
+            for (String location : annotation.locations()) {
+                builder = builder.addScriptLocation(location);
+            }
+        } else {
+            log.info("To configure postgresql annotate test class with '@PostgreSQL'.");
         }
 
         return builder.build();
