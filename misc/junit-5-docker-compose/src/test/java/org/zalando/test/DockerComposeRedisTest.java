@@ -13,18 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.zalando.stups.junit.postgres;
+package org.zalando.test;
 
-import org.junit.Test;
+import java.util.concurrent.TimeUnit;
 
-import ru.yandex.qatools.embed.postgresql.distribution.Version;
+import org.junit.jupiter.api.Test;
+import org.zalando.stups.docker.DockerCompose;
+import org.zalando.stups.docker.DockerCompose.WaitFor;
 
-public class VersionToStringTest {
+@DockerCompose(
+        file="src/test/resources/docker-compose-2.yaml",
+        saveLogsTo="target/redis-test-logs",
+        waitFor= {
+             @WaitFor(containerName="redis")
+        })
+public class DockerComposeRedisTest {
 
     @Test
-    public void versionToString() {
-        String version = Version.V9_6_7.asInDownloadPath();
-        System.out.println(version);
+    void runDockerCompose() throws InterruptedException {
+        System.out.println("before sleep");
+        TimeUnit.SECONDS.sleep(3);
+        System.out.println("after sleep");
     }
-
 }

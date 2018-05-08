@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.zalando.stups.junit.postgres;
+package org.zalando.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import ru.yandex.qatools.embed.postgresql.distribution.Version;
-
-public class VersionToStringTest {
+public class SimpleTest {
 
     @Test
-    public void versionToString() {
-        String version = Version.V9_6_7.asInDownloadPath();
-        System.out.println(version);
+    public void runTest() {
+        System.out.println("RUN SIMPLE TEST");
     }
 
 }
