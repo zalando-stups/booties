@@ -14,7 +14,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <spring-boot.version>1.5.9.RELEASE</spring-boot.version>
+        <spring-boot.version>1.5.12.RELEASE</spring-boot.version>
 
         <java.source>1.8</java.source>
         <java.target>1.8</java.target>
@@ -52,7 +52,7 @@
         <dependency>
             <groupId>ru.yandex.qatools.embed</groupId>
             <artifactId>postgresql-embedded</artifactId>
-            <version>2.8</version>
+            <version>2.9</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -67,13 +67,13 @@
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-launcher</artifactId>
-            <version>1.1.0</version>
+            <version>1.2.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.1.0</version>
+            <version>5.2.0</version>
             <optional>true</optional>
         </dependency>
     </dependencies>
@@ -143,6 +143,31 @@
                     <useReleaseProfile>false</useReleaseProfile>
                     <arguments>-Pcustom-release,maven -Dmaven.test.skip</arguments>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-invoker-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <streamLogs>false</streamLogs>
+                    <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+                    <settingsFile>src/it/settings.xml</settingsFile>
+                    <postBuildHookScript>verify</postBuildHookScript> <!-- no extension required -->
+                    <goals>
+                        <goal>clean</goal>
+                        <goal>process-sources</goal>
+                    </goals>
+                    <pomIncludes>
+                        <pomInclude>*/pom.xml</pomInclude>
+                    </pomIncludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

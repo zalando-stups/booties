@@ -131,7 +131,7 @@ public class PostgreSqlRule extends ExternalResource {
         private String username = "postgres";
         private String password = "postgres";
         private String dbName = "test";
-        private Version version = Version.V10_2;
+        private Version version = Version.V10_3;
         private List<String> locations = new LinkedList<String>();
 //        private boolean fullExtractOutput = false;
         private String separator = ScriptUtils.EOF_STATEMENT_SEPARATOR;
