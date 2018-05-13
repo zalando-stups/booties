@@ -1,0 +1,15 @@
+debug: false
+
+spring:
+  datasource:
+    type: org.postgresql.ds.PGSimpleDataSource
+    name: junit5_test
+    url: jdbc:postgresql://localhost:5432/junit5_test
+    username: app
+    password: test
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    user: flyway
+    password: test
+    url: jdbc:postgresql://localhost:5432/junit5_test

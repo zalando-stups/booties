@@ -4,23 +4,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.sql.DataSource;
 
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.zalando.stups.junit.postgres.PostgreSqlRule;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.zalando.stups.junit.postgres.PostgreSQL;
+import org.zalando.stups.junit.postgres.PostgresqlExtension;
 
-@RunWith(SpringRunner.class)
+@PostgreSQL(locations = { "src/test/resources" })
+@ExtendWith({ PostgresqlExtension.class, SpringExtension.class })
 @SpringBootTest
-public class Junit4ExampleApplicationTest {
-
-    @ClassRule
-    public static final PostgreSqlRule postgres = new PostgreSqlRule.Builder()
-                                                                    .addScriptLocation("src/test/resources")
-                                                                    .build();
+public class Junit5ExampleApplicationTests {
 
     private static final String SQL = "SELECT ALL FROM EMPLOYEE;";
 
@@ -28,7 +24,7 @@ public class Junit4ExampleApplicationTest {
     private DataSource dataSource;
 
     @Test
-    public void contextLoads() {
+    void contextLoads() {
         assertThat(dataSource).isNotNull();
         JdbcTemplate jdbc = new JdbcTemplate(dataSource);
         jdbc.afterPropertiesSet();
