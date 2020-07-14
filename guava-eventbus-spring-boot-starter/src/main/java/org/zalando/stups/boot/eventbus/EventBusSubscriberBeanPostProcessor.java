@@ -20,6 +20,10 @@ import java.lang.reflect.Method;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.aop.TargetSource;
+import org.springframework.aop.framework.Advised;
+import org.springframework.aop.support.AopUtils;
+import org.springframework.aop.target.SingletonTargetSource;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -55,17 +59,34 @@ public class EventBusSubscriberBeanPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(final Object bean, final String beanName) throws BeansException {
-
-        for (Method m : bean.getClass().getMethods()) {
+        Object realBean = bean;
+        Method[] methods = bean.getClass().getMethods();
+        if (AopUtils.isAopProxy(bean)) {
+            realBean = getProxyTarget(bean);
+            methods = AopUtils.getTargetClass(bean).getMethods();
+        }
+        for (Method m : methods) {
             if (m.isAnnotationPresent(Subscribe.class)) {
                 logger.info("register bean as subscriber");
-                this.eventBus.register(bean);
-                this.asyncEventBus.register(bean);
+                this.eventBus.register(realBean);
+                this.asyncEventBus.register(realBean);
                 break;
             }
         }
-
         return bean;
+    }
+
+    /**
+     * Obtain the target object behind the given proxy, if any.
+     */
+    private static Object getProxyTarget(Object proxy) {
+        if (proxy instanceof Advised) {
+            TargetSource targetSource = ((Advised) proxy).getTargetSource();
+            if (targetSource instanceof SingletonTargetSource) {
+                return ((SingletonTargetSource) targetSource).getTarget();
+            }
+        }
+        return null;
     }
 
 }
